@@ -6,12 +6,11 @@ plugins {
     id 'BlueChartSolver.java-application-conventions'
 }
 
-dependencies {
-    implementation 'org.apache.commons:commons-text'
-    implementation project(':utilities')
-}
-
 application {
     // Define the main class for the application.
     mainClass = 'BlueChartSolver.app.App'
+}
+
+test {
+    useJUnitPlatform()
 }
