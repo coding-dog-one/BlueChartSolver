@@ -1,6 +1,7 @@
 package BlueChartSolver.app;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class Variable {
     private final String name;
@@ -8,6 +9,8 @@ public class Variable {
     private final int degree;
 
     private Variable(String name, int exponent, int degree) {
+        assert ! Pattern.compile("[^a-zA-Z]").matcher(name).find()
+                : "name: " + name + " contains invalid character. Only alphabetical characters are accepted.";
         this.name = name;
         this.exponent = exponent;
         this.degree = degree;
@@ -23,6 +26,22 @@ public class Variable {
 
     public Variable powerOf(int exponent) {
         return new Variable(this.name, this.exponent == 1 ? exponent : this.exponent + exponent, this.degree);
+    }
+
+    public MonomialFunction times(Variable var) {
+        return new MonomialFunction(this).times(var);
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public int exponent() {
+        return exponent;
+    }
+
+    public int degree() {
+        return degree;
     }
 
     @Override

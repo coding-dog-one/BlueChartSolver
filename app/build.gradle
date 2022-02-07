@@ -12,5 +12,7 @@ application {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform{
+        enableAssertions = true
+    }
 }
