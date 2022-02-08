@@ -6,35 +6,44 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MonomialFunction {
-    private int degree = 1;
-    private final Map<String, Variable> vars = new HashMap<>();
+    private int constant = 1;
+    private final Map<Character, Integer> exponentMap = new HashMap<>();
 
     public MonomialFunction(Variable var) {
-        degree *= var.degree();
-        vars.put(var.name(), Variable.named(var.name()).powerOf(var.exponent()));
+        exponentMap.put(var.name(), 1);
+    }
+
+    public MonomialFunction(int i) {
+        constant *= i;
     }
 
     public MonomialFunction times(int i) {
-        degree *= i;
+        constant *= i;
         return this;
     }
 
     public MonomialFunction times(Variable var) {
-        degree *= var.degree();
-        if (vars.containsKey(var.name())) {
-            vars.replace(var.name(), Variable.named(var.name()).powerOf(vars.get(var.name()).exponent() + var.exponent()));
+        if (exponentMap.containsKey(var.name())) {
+            exponentMap.replace(var.name(), exponentMap.get(var.name()) + 1);
         } else {
-            vars.put(var.name(), Variable.named(var.name()).powerOf(var.exponent()));
+            exponentMap.put(var.name(), 1);
         }
+        return this;
+    }
+
+    public MonomialFunction powerOf(int exponent) {
+        constant = (int) Math.pow(constant, exponent);
+        exponentMap.entrySet().forEach(es -> es.setValue((es.getValue() * exponent)));
         return this;
     }
 
     @Override
     public String toString() {
-        return degree == 1 ? "" : degree + vars.values().stream()
-                .map(Variable::toString)
-                .sorted()
-                .collect(Collectors.joining());
+        return (constant == 1 ? "" : constant == -1 ? "-" : constant) +
+                exponentMap.entrySet().stream()
+                        .map(es -> es.getKey() + (es.getValue() == 1 ? "" : "^" + es.getValue()))
+                        .sorted()
+                        .collect(Collectors.joining());
     }
 
     @Override
@@ -42,11 +51,11 @@ public class MonomialFunction {
         if (this == o) return true;
         if (!(o instanceof MonomialFunction)) return false;
         MonomialFunction that = (MonomialFunction) o;
-        return degree == that.degree && vars.equals(that.vars);
+        return constant == that.constant && exponentMap.equals(that.exponentMap);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(degree, vars);
+        return Objects.hash(constant, exponentMap);
     }
 }
