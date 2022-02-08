@@ -7,7 +7,7 @@ public class Variable {
 
     private Variable(char name) {
         assert Character.isAlphabetic(name)
-                : "name: " + name + " is invalid. Only alphabetical character are accepted.";
+                : "name: " + name + " is invalid. Only alphabetical character is accepted.";
         this.name = name;
     }
 
