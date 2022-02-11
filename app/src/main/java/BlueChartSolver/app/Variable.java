@@ -15,24 +15,28 @@ public class Variable {
         return new Variable(name);
     }
 
-    public MonomialFunction times(int multiplier) {
-        return new MonomialFunction(this).times(multiplier);
+    public PolynomialFunction plus(PolynomialFunction addend) {
+        return PolynomialFunction.from(this).plus(addend);
     }
 
-    public MonomialFunction times(Variable var) {
-        return new MonomialFunction(this).times(var);
+    public PolynomialFunction plus(Variable addend) {
+        return PolynomialFunction.from(this).plus(addend);
     }
 
-    public MonomialFunction times(MonomialFunction mf) {
-        return mf.times(this);
+    public PolynomialFunction times(PolynomialFunction multiplier) {
+        return PolynomialFunction.from(this).times(multiplier);
     }
 
-    public MonomialFunction powerOf(int exponent) {
-        return new MonomialFunction(this).powerOf(exponent);
+    public PolynomialFunction times(Variable multiplier) {
+        return PolynomialFunction.from(this).times(multiplier);
     }
 
-    public char name() {
-        return name;
+    public PolynomialFunction times(int multiplier) {
+        return PolynomialFunction.from(this).times(multiplier);
+    }
+
+    public PolynomialFunction powerOf(int exponent) {
+        return PolynomialFunction.from(this).powerOf(exponent);
     }
 
     @Override
