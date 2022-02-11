@@ -7,7 +7,7 @@ public class Variable {
 
     private Variable(char name) {
         assert Character.isAlphabetic(name)
-                : "name: " + name + " is invalid. Only alphabetical character is accepted.";
+                : "name: " + name + " is invalid. Only an alphabetical character is accepted.";
         this.name = name;
     }
 
@@ -19,12 +19,16 @@ public class Variable {
         return new MonomialFunction(this).times(multiplier);
     }
 
-    public MonomialFunction powerOf(int exponent) {
-        return new MonomialFunction(this).powerOf(exponent);
-    }
-
     public MonomialFunction times(Variable var) {
         return new MonomialFunction(this).times(var);
+    }
+
+    public MonomialFunction times(MonomialFunction mf) {
+        return mf.times(this);
+    }
+
+    public MonomialFunction powerOf(int exponent) {
+        return new MonomialFunction(this).powerOf(exponent);
     }
 
     public char name() {
