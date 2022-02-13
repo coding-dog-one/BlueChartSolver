@@ -86,6 +86,7 @@ public class Term {
 
     @Override
     public String toString() {
+        if (variables.size() == 0) { return Integer.toString(coefficient); }
         return (coefficient == 1 ? "" : coefficient == -1 ? "-" : coefficient) + toStringWithoutCoefficient();
     }
 

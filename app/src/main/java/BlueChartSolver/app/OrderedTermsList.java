@@ -16,7 +16,8 @@ public class OrderedTermsList {
 
     /**
      * 着目した変数について、次数の高い順に項をソートする(xに着目したとき、x^3(=3) > x^2(=2) > 1(=0))。
-     * 定数など、次数が同じもの同士は、項の中の各変数の次数の最大値が大きい順にソートする(xに着目したとき、y^3(=3) > 5ab(=1) > 1(=0))。
+     * 次いで、項全体の次数の高い順にソートする(xに着目したとき、abx^2(=4) > ax^2(=3) > x^2(=2))。
+     * 次いで、項の中の各変数の次数の最大値が大きい順にソートする(xに着目したとき、a^3x(=3) > ab^2x(=2) > abcx(=1))。
      * その後、各項から係数を除いたものの辞書順にソートする(xに着目したとき、各定数について、8ab > -3ac > 2bc)。
      *
      * @param focusedVariables 着目する変数
@@ -24,6 +25,7 @@ public class OrderedTermsList {
     public static OrderedTermsList orderByDegree(Set<Term> terms, Set<Variable> focusedVariables) {
         List<Term> orderedList = terms.stream()
                 .sorted(comparingDegreeOf(focusedVariables).reversed()
+                        .thenComparing(Comparator.comparing(Term::degree).reversed())
                         .thenComparing(Comparator.comparing(Term::maxDegree).reversed())
                         .thenComparing(Term::toStringWithoutCoefficient)
                 ).collect(Collectors.toList());
@@ -32,6 +34,10 @@ public class OrderedTermsList {
 
     private static Comparator<Term> comparingDegreeOf(Set<Variable> focusedVariables) {
         return Comparator.comparingInt(t -> t.degreeOf(focusedVariables));
+    }
+
+    public int degree() {
+        return terms.get(0).degreeOf(focusedVariables);
     }
 
     public Optional<PolynomialFunction> constant() {

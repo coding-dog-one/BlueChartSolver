@@ -23,6 +23,10 @@ public class Variable {
         return PolynomialFunction.from(this).plus(addend);
     }
 
+    public PolynomialFunction minus(PolynomialFunction subtrahend) {
+        return PolynomialFunction.from(this).minus(subtrahend);
+    }
+
     public PolynomialFunction minus(Variable subtrahend) {
         return PolynomialFunction.from(this).minus(subtrahend);
     }
