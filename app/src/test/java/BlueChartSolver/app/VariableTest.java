@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class VariableTest {
 
     @Test
@@ -14,13 +15,9 @@ public class VariableTest {
         Variable F = Variable.named('F');
         assertEquals("F", F.toString());
 
-        assertThrows(AssertionError.class, () -> {
-            Variable.named('1');
-        });
+        assertThrows(AssertionError.class, () -> Variable.named('1'));
 
-        assertThrows(AssertionError.class, () -> {
-            Variable.named('%');
-        });
+        assertThrows(AssertionError.class, () -> Variable.named('%'));
     }
 
     @Test

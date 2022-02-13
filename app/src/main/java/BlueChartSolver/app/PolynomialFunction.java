@@ -1,17 +1,24 @@
 package BlueChartSolver.app;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.regex.Pattern;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PolynomialFunction {
     private final Map<String, Term> terms;
 
     private PolynomialFunction(Map<String, Term> terms) {
-        this.terms = terms;
+        this.terms = validateTerms(Objects.requireNonNull(terms, "terms"));
+    }
+
+    /**
+     * 係数が0の項を取り除く
+     */
+    private Map<String, Term> validateTerms(Map<String, Term> terms) {
+        Map<String, Term> result = new HashMap<>();
+        terms.values().stream()
+                .filter(t -> t.coefficient() != 0)
+                .forEach(t -> result.put(t.toStringWithoutCoefficient(), t));
+        return result;
     }
 
     public static PolynomialFunction from(Term term) {
@@ -34,10 +41,7 @@ public class PolynomialFunction {
             String key = term.toStringWithoutCoefficient();
             if (copy.containsKey(key)) {
                 Term thisTerm = copy.get(key);
-                copy.replace(key, thisTerm
-                        .dividedBy(thisTerm.coefficient())
-                        .times(thisTerm.coefficient() + term.coefficient())
-                );
+                copy.replace(key, thisTerm.plus(term));
             } else {
                 copy.put(key, term);
             }
@@ -54,30 +58,30 @@ public class PolynomialFunction {
     }
 
     public PolynomialFunction minus(PolynomialFunction subtrahend) {
-        Map<String, Term> terms = new HashMap<>();
-        subtrahend.terms.values().forEach(term -> {
-            terms.put(term.toStringWithoutCoefficient(), term.times(-1));
-        });
-        return this.plus(new PolynomialFunction(terms));
+        Map<String, Term> reversed = new HashMap<>();
+        subtrahend.terms.values().forEach(term -> reversed.put(term.toStringWithoutCoefficient(), term.times(-1)));
+        return this.plus(new PolynomialFunction(reversed));
+    }
+
+    public PolynomialFunction minus(Variable subtrahend) {
+        return this.minus(PolynomialFunction.from(subtrahend));
+    }
+
+    public PolynomialFunction minus(int subtrahend) {
+        return this.plus(subtrahend * -1);
     }
 
     public PolynomialFunction times(PolynomialFunction multiplier) {
         Map<String, Term> variables = new HashMap<>();
-        this.terms.values().forEach(t -> {
-            multiplier.terms.values().forEach(m -> {
-                Term newTerm = t.times(m);
-                String key = newTerm.toStringWithoutCoefficient();
-                if (variables.containsKey(key)) {
-                    Term oldTerm = variables.get(key);
-                    variables.put(key, oldTerm
-                            .dividedBy(oldTerm.coefficient())
-                            .times(oldTerm.coefficient() + newTerm.coefficient())
-                    );
-                } else {
-                    variables.put(key, newTerm);
-                }
-            });
-        });
+        this.terms.values().forEach(t -> multiplier.terms.values().forEach(m -> {
+            Term newTerm = t.times(m);
+            String key = newTerm.toStringWithoutCoefficient();
+            if (variables.containsKey(key)) {
+                variables.replace(key, variables.get(key).plus(newTerm));
+            } else {
+                variables.put(key, newTerm);
+            }
+        }));
         return new PolynomialFunction(variables);
     }
 
@@ -90,25 +94,28 @@ public class PolynomialFunction {
     }
 
     public PolynomialFunction powerOf(int exponent) {
-        //TODO 多項式の累乗を実装する
-        Map<String, Term> terms = new HashMap<>();
-        this.terms.values().forEach(term -> {
-            Term newTerm = term.powerOf(exponent);  //単項式の想定
-            terms.put(newTerm.toStringWithoutCoefficient(), newTerm);
-        });
-        return new PolynomialFunction(terms);
+        PolynomialFunction result = new PolynomialFunction(new HashMap<>(this.terms));
+        for (int i = 0; i < exponent - 1; i++) {
+            result = result.times(this);
+        }
+        return result;
     }
 
-    private final Pattern minusPattern = Pattern.compile("\\+ -");
+    public OrderedTermsList orderByDegreeOf(Set<Variable> focusedVariables) {
+        return OrderedTermsList.orderByDegree(new HashSet<>(terms.values()), focusedVariables);
+    }
+
+    public OrderedTermsList orderByDegreeOf(Variable variable) {
+        return orderByDegreeOf(Set.of(variable));
+    }
+
     @Override
     public String toString() {
-        String s = terms.values().stream()
-                .sorted(Comparator.comparing(Term::maxExponent)
-                        .reversed()
-                        .thenComparing(Term::toStringWithoutCoefficient)
-                ).map(Term::toString)
-                .collect(Collectors.joining(" + "));
-        return minusPattern.matcher(s).replaceAll("- ");
+        Set<Variable> allVariables = terms.values().stream()
+                .map(Term::variables)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+        return orderByDegreeOf(allVariables).toString();
     }
 
     @Override

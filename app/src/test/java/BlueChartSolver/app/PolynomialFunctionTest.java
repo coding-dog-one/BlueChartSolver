@@ -3,18 +3,20 @@ package BlueChartSolver.app;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class PolynomialFunctionTest {
     @Test
-    public void 多項式は次数の高い順に並ぶ() {
+    public void 多項式は着目した変数の次数の高い順に並べることができる() {
         Variable x = Variable.named('x');
-        assertEquals("-2x^5 + 17x^3 - 9x", x.powerOf(5).times(-2)
-                .plus(x.powerOf(3).times(17))
-                .plus(x.times(-9))
-                .toString()
-        );
-        assertEquals("5a - 12", Variable.named('a').times(5).plus(-12).toString());
+        Variable y = Variable.named('y');
+        PolynomialFunction p = x.powerOf(2)
+                .plus(x.times(y).times(2))
+                .plus(y.powerOf(2))
+                .minus(5);
+        assertEquals("x^2 + y^2 + 2xy - 5", p.toString());
+        assertEquals("x^2 + 2xy + y^2 - 5", p.orderByDegreeOf(x).toString());
+        assertEquals("y^2 - 5", p.orderByDegreeOf(x).constant().orElse(PolynomialFunction.from(0)).toString());
     }
 
     @Test
@@ -47,19 +49,6 @@ public class PolynomialFunctionTest {
     }
 
     @Test
-    public void 二次式の展開() {
-        Variable x = Variable.named('x');
-        Variable a = Variable.named('a');
-        Variable b = Variable.named('b');
-        //TODO
-//        assertEquals("", a.plus(b).powerOf(2).toString());
-        assertEquals(
-                x.powerOf(2).plus((a.plus(b)).times(x)).plus(a.times(b)),
-                x.plus(a).times(x.plus(b))
-        );
-    }
-
-    @Test
     public void 同類項はまとめられる() {
         Variable x = Variable.named('x');
         PolynomialFunction A = x.powerOf(3).times(5)
@@ -74,5 +63,76 @@ public class PolynomialFunctionTest {
                 .plus(x.times(3))
                 .plus(1);
         assertEquals(expected, A.minus(B));
+    }
+
+    @Test
+    public void 二次式の展開公式() {
+        Variable a = Variable.named('a');
+        Variable b = Variable.named('b');
+        assertEquals(
+                a.powerOf(2).plus(a.times(b).times(2)).plus(b.powerOf(2)),
+                a.plus(b).powerOf(2)
+        );
+
+        assertEquals(
+                a.powerOf(2).minus(a.times(b).times(2)).plus(b.powerOf(2)),
+                a.minus(b).powerOf(2)
+        );
+
+        assertEquals(
+                a.powerOf(2).minus(b.powerOf(2)),
+                a.plus(b).times(a.minus(b))
+        );
+
+        Variable x = Variable.named('x');
+        assertEquals(
+                x.powerOf(2).plus((a.plus(b)).times(x)).plus(a.times(b)),
+                x.plus(a).times(x.plus(b))
+        );
+
+        assertEquals(
+                x.powerOf(2).plus((a.plus(b)).times(x)).plus(a.times(b)),
+                x.plus(a).times(x.plus(b))
+        );
+
+        Variable c = Variable.named('c');
+        Variable d = Variable.named('d');
+        assertEquals(
+                x.powerOf(2).times(a).times(c)
+                        .plus(x.times(a.times(d).plus(b.times(c))))
+                        .plus(b.times(d)),
+                a.times(x).plus(b).times(c.times(x).plus(d))
+        );
+    }
+
+    @Test
+    public void 三次式の展開公式() {
+        Variable a = Variable.named('a');
+        Variable b = Variable.named('b');
+        assertEquals(
+                a.powerOf(3).plus(b.powerOf(3)),
+                a.plus(b).times(a.powerOf(2).minus(a.times(b)).plus(b.powerOf(2)))
+        );
+
+        assertEquals(
+                a.powerOf(3).minus(b.powerOf(3)),
+                a.minus(b).times(a.powerOf(2).plus(a.times(b)).plus(b.powerOf(2)))
+        );
+
+        assertEquals(
+                a.powerOf(3)
+                        .plus(a.powerOf(2).times(b).times(3))
+                        .plus(b.powerOf(2).times(a).times(3))
+                        .plus(b.powerOf(3)),
+                a.plus(b).powerOf(3)
+        );
+
+        assertEquals(
+                a.powerOf(3)
+                        .minus(a.powerOf(2).times(b).times(3))
+                        .plus(b.powerOf(2).times(a).times(3))
+                        .minus(b.powerOf(3)),
+                a.minus(b).powerOf(3)
+        );
     }
 }

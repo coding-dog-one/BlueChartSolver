@@ -1,8 +1,6 @@
 package BlueChartSolver.app;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Term {
@@ -11,7 +9,7 @@ public class Term {
 
     private Term(int coefficient, Map<Variable, Integer> variables) {
         this.coefficient = coefficient;
-        this.variables = variables;
+        this.variables = Objects.requireNonNull(variables, "variables");
     }
 
     public static Term from(Variable var) {
@@ -22,6 +20,11 @@ public class Term {
 
     public static Term from(int constant) {
         return new Term(constant, new HashMap<>());
+    }
+
+    public Term plus(Term addend) {
+        assert this.likes(addend) : "can't add unlike term.";
+        return new Term(this.coefficient + addend.coefficient, new HashMap<>(this.variables));
     }
 
     public Term times(Term multiplier) {
@@ -41,23 +44,37 @@ public class Term {
         return this.times(Term.from(multiplier));
     }
 
-    public Term dividedBy(int divisor) {
-        Map<Variable, Integer> copy = new HashMap<>(this.variables);
-        return new Term(this.coefficient / divisor, copy);
-    }
-
     public Term powerOf(int exponent) {
         Map<Variable, Integer> copy = new HashMap<>(this.variables);
         copy.entrySet().forEach(es -> es.setValue((es.getValue() * exponent)));
         return new Term((int) Math.pow(this.coefficient, exponent), copy);
     }
 
+    public int maxDegree() {
+        return variables.values().stream().max(Integer::compareTo).orElse(0);
+    }
+
+    public int degreeOf(Set<Variable> variableSet) {
+        return variables.entrySet().stream()
+                .filter(es -> variableSet.contains(es.getKey()))
+                .mapToInt(Map.Entry::getValue)
+                .sum();
+    }
+
+    public int degreeOf(Variable variable) {
+        return degreeOf(Set.of(variable));
+    }
+
+    public int degree() {
+        return degreeOf(this.variables.keySet());
+    }
+
     public int coefficient() {
         return coefficient;
     }
 
-    public int maxExponent() {
-        return variables.values().stream().max(Integer::compareTo).orElse(0);
+    public Set<Variable> variables() {
+        return variables.keySet();
     }
 
     public String toStringWithoutCoefficient() {
@@ -70,6 +87,10 @@ public class Term {
     @Override
     public String toString() {
         return (coefficient == 1 ? "" : coefficient == -1 ? "-" : coefficient) + toStringWithoutCoefficient();
+    }
+
+    public boolean likes(Term other) {
+        return this.variables.equals(other.variables);
     }
 
     @Override
