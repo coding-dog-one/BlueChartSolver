@@ -1,25 +1,25 @@
 package BlueChart.Chapter1.Section1;
 
-import BlueChartSolver.app.PolynomialFunction;
-import BlueChartSolver.app.Variable;
+import BlueChartSolver.models.Polynomial;
+import BlueChartSolver.models.Variable;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SuppressWarnings({"NonAsciiCharacters", "NewClassNamingConvention"})
+@SuppressWarnings({"NonAsciiCharacters"})
 public class Subsection2Test {
     @Nested
     class 例題2 {
         private final Variable x = Variable.named('x');
         private final Variable y = Variable.named('y');
-        private final PolynomialFunction A = x.powerOf(2)
+        private final Polynomial A = x.powerOf(2)
                 .plus(y.powerOf(2).times(3))
                 .minus(x.times(y).times(2));
-        private final PolynomialFunction B = y.powerOf(2)
+        private final Polynomial B = y.powerOf(2)
                 .plus(x.times(y).times(3))
                 .minus(x.powerOf(2).times(2));
-        private final PolynomialFunction C = x.powerOf(2).times(-3)
+        private final Polynomial C = x.powerOf(2).times(-3)
                 .plus(x.times(y))
                 .minus(y.powerOf(2).times(4));
 
@@ -51,13 +51,13 @@ public class Subsection2Test {
     class 練習2 {
         private final Variable x = Variable.named('x');
         private final Variable y = Variable.named('y');
-        private final PolynomialFunction A = x.powerOf(3).times(-2)
+        private final Polynomial A = x.powerOf(3).times(-2)
                 .plus(x.powerOf(2).times(y).times(4))
                 .plus(y.powerOf(3).times(5));
-        private final PolynomialFunction B = x.powerOf(2).times(y)
+        private final Polynomial B = x.powerOf(2).times(y)
                 .minus(x.times(y.powerOf(2)).times(3))
                 .plus(y.powerOf(3).times(2));
-        private final PolynomialFunction C = x.powerOf(3).times(3)
+        private final Polynomial C = x.powerOf(3).times(3)
                 .minus(x.powerOf(2).times(y).times(2));
 
         @Test

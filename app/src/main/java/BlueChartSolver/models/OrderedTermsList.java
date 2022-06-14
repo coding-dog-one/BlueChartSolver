@@ -1,4 +1,4 @@
-package BlueChartSolver.app;
+package BlueChartSolver.models;
 
 import java.util.Comparator;
 import java.util.List;
@@ -44,11 +44,11 @@ public class OrderedTermsList {
         return terms.get(0).degreeOf(focusedVariables);
     }
 
-    public Optional<PolynomialFunction> constant() {
+    public Optional<Polynomial> constant() {
         return terms.stream()
                 .filter(t -> t.variables().stream().noneMatch(focusedVariables::contains))
-                .map(PolynomialFunction::from)
-                .reduce(PolynomialFunction::plus);
+                .map(Polynomial::from)
+                .reduce(Polynomial::plus);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class OrderedTermsList {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BlueChartSolver.app.OrderedTermsList)) return false;
-        BlueChartSolver.app.OrderedTermsList that = (BlueChartSolver.app.OrderedTermsList) o;
+        if (!(o instanceof OrderedTermsList)) return false;
+        OrderedTermsList that = (OrderedTermsList) o;
         return terms.equals(that.terms);
     }
 

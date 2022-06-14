@@ -1,4 +1,4 @@
-package BlueChartSolver.app;
+package BlueChartSolver.models;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,10 +8,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PolynomialFunction {
+public class Polynomial {
     private final Map<String, Term> terms;
 
-    private PolynomialFunction(Map<String, Term> terms) {
+    private Polynomial(Map<String, Term> terms) {
         this.terms = validateTerms(Objects.requireNonNull(terms, "terms"));
     }
 
@@ -26,21 +26,21 @@ public class PolynomialFunction {
         return result;
     }
 
-    public static PolynomialFunction from(Term term) {
+    public static Polynomial from(Term term) {
         Map<String, Term> terms = new HashMap<>();
         terms.put(term.toStringWithoutCoefficient(), term);
-        return new PolynomialFunction(terms);
+        return new Polynomial(terms);
     }
 
-    public static PolynomialFunction from(Variable var) {
-        return PolynomialFunction.from(Term.from(var));
+    public static Polynomial from(Variable var) {
+        return Polynomial.from(Term.from(var));
     }
 
-    public static PolynomialFunction from(int constant) {
-        return PolynomialFunction.from(Term.from(constant));
+    public static Polynomial from(int constant) {
+        return Polynomial.from(Term.from(constant));
     }
 
-    public PolynomialFunction plus(PolynomialFunction addend) {
+    public Polynomial plus(Polynomial addend) {
         Map<String, Term> copy = new HashMap<>(this.terms);
         addend.terms.values().forEach(term -> {
             String key = term.toStringWithoutCoefficient();
@@ -51,32 +51,32 @@ public class PolynomialFunction {
                 copy.put(key, term);
             }
         });
-        return new PolynomialFunction(copy);
+        return new Polynomial(copy);
     }
 
-    public PolynomialFunction plus(Variable addend) {
-        return this.plus(PolynomialFunction.from(addend));
+    public Polynomial plus(Variable addend) {
+        return this.plus(Polynomial.from(addend));
     }
 
-    public PolynomialFunction plus(int addend) {
-        return this.plus(PolynomialFunction.from(addend));
+    public Polynomial plus(int addend) {
+        return this.plus(Polynomial.from(addend));
     }
 
-    public PolynomialFunction minus(PolynomialFunction subtrahend) {
+    public Polynomial minus(Polynomial subtrahend) {
         Map<String, Term> reversed = new HashMap<>();
         subtrahend.terms.values().forEach(term -> reversed.put(term.toStringWithoutCoefficient(), term.times(-1)));
-        return this.plus(new PolynomialFunction(reversed));
+        return this.plus(new Polynomial(reversed));
     }
 
-    public PolynomialFunction minus(Variable subtrahend) {
-        return this.minus(PolynomialFunction.from(subtrahend));
+    public Polynomial minus(Variable subtrahend) {
+        return this.minus(Polynomial.from(subtrahend));
     }
 
-    public PolynomialFunction minus(int subtrahend) {
+    public Polynomial minus(int subtrahend) {
         return this.plus(subtrahend * -1);
     }
 
-    public PolynomialFunction times(PolynomialFunction multiplier) {
+    public Polynomial times(Polynomial multiplier) {
         Map<String, Term> variables = new HashMap<>();
         this.terms.values().forEach(t -> multiplier.terms.values().forEach(m -> {
             Term newTerm = t.times(m);
@@ -87,19 +87,19 @@ public class PolynomialFunction {
                 variables.put(key, newTerm);
             }
         }));
-        return new PolynomialFunction(variables);
+        return new Polynomial(variables);
     }
 
-    public PolynomialFunction times(Variable multiplier) {
-        return this.times(PolynomialFunction.from(multiplier));
+    public Polynomial times(Variable multiplier) {
+        return this.times(Polynomial.from(multiplier));
     }
 
-    public PolynomialFunction times(int multiplier) {
-        return this.times(PolynomialFunction.from(multiplier));
+    public Polynomial times(int multiplier) {
+        return this.times(Polynomial.from(multiplier));
     }
 
-    public PolynomialFunction powerOf(int exponent) {
-        PolynomialFunction result = new PolynomialFunction(new HashMap<>(this.terms));
+    public Polynomial powerOf(int exponent) {
+        Polynomial result = new Polynomial(new HashMap<>(this.terms));
         for (int i = 0; i < exponent - 1; i++) {
             result = result.times(this);
         }
@@ -126,8 +126,8 @@ public class PolynomialFunction {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PolynomialFunction)) return false;
-        PolynomialFunction that = (PolynomialFunction) o;
+        if (!(o instanceof Polynomial)) return false;
+        Polynomial that = (Polynomial) o;
         return terms.equals(that.terms);
     }
 
