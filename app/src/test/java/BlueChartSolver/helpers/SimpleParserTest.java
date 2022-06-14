@@ -1,6 +1,7 @@
-package BlueChartSolver.app;
+package BlueChartSolver.helpers;
 
-import BlueChartSolver.app.Parser.SimpleParser;
+import BlueChartSolver.models.Polynomial;
+import BlueChartSolver.models.Variable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,14 +11,22 @@ public class SimpleParserTest {
     private static final SimpleParser parser = new SimpleParser();
 
     @Test
-    public void testAssertion() {
+    public void throwIllegalArgumentException_WhenSplitInputLengthIsEven() {
         assertThrows(IllegalArgumentException.class, () -> parser.parse(""));
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("   "));
         assertThrows(IllegalArgumentException.class, () -> parser.parse("+"));
         assertThrows(IllegalArgumentException.class, () -> parser.parse("+ 100"));
     }
 
     @Test
-    public void parseSpaceSeparatedText() {
+    public void parseMonomial() {
+        assertEquals(Polynomial.from(10), parser.parse("10"));
+
+        var x = Variable.named('x');
+        assertEquals(x.powerOf(2).times(-5), parser.parse("-5x^2"));
+    }
+    @Test
+    public void parsePolynomial() {
         var x = Variable.named('x');
         var f1 = x.powerOf(2).times(-1)
                 .plus(x.times(5))

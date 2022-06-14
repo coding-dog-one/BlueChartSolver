@@ -1,9 +1,9 @@
-package BlueChartSolver.app.Parser;
+package BlueChartSolver.helpers;
 
-import BlueChartSolver.app.Operator.Addition;
-import BlueChartSolver.app.Operator.Multiply;
-import BlueChartSolver.app.Operator.Operator;
-import BlueChartSolver.app.Operator.Subtraction;
+import BlueChartSolver.models.operators.Addition;
+import BlueChartSolver.models.operators.Multiply;
+import BlueChartSolver.models.operators.Operator;
+import BlueChartSolver.models.operators.Subtraction;
 
 public class OperatorParser {
     public Operator parse(String text) {

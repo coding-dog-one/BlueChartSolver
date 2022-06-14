@@ -1,23 +1,21 @@
-package BlueChartSolver.app.Parser;
+package BlueChartSolver.helpers;
 
-import BlueChartSolver.app.Operator.Addition;
-import BlueChartSolver.app.Operator.Operator;
-import BlueChartSolver.app.PolynomialFunction;
-
-import java.util.regex.Pattern;
+import BlueChartSolver.models.Polynomial;
+import BlueChartSolver.models.operators.Addition;
+import BlueChartSolver.models.operators.Operator;
 
 public class SimpleParser {
-    private static final Pattern termPattern = Pattern.compile("^-?[a-zA-Z0-9^]+");
     private static final TermParser termParser = new TermParser();
     private static final OperatorParser operatorParser = new OperatorParser();
 
-    public PolynomialFunction parse(String text) {
+    public Polynomial parse(String text) {
         String[] splitText = text.split(" ");
-        if (splitText.length % 2 == 0) {
-            throw new IllegalArgumentException("Input terms and operators as space-separated text. The length after split should be odd.");
+        var length = splitText.length;
+        if (length % 2 == 0) {
+            throw new IllegalArgumentException("Please input terms and operators as space-separated text. The length of split input should be odd but was " + length + ".");
         }
 
-        var result = PolynomialFunction.from(0);
+        var result = Polynomial.from(0);
         var operator = (Operator) new Addition();
         for (int i = 0; i < splitText.length; i++) {
             String s = splitText[i];

@@ -1,4 +1,4 @@
-package BlueChartSolver.app;
+package BlueChartSolver.models;
 
 import org.junit.jupiter.api.Test;
 
@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class MonomialFunctionTest {
+public class MonomialTest {
     @Test
     public void 定数は単項式であり単項式とは項が一つの多項式() {
         Term t = Term.from(5);
         assertEquals("5", t.toString());
 
-        PolynomialFunction f = PolynomialFunction.from(t);
+        Polynomial f = Polynomial.from(t);
         assertEquals("5", f.toString());
     }
 
@@ -26,7 +26,7 @@ public class MonomialFunctionTest {
         Term t = Term.from(Variable.named('x'));
         assertEquals("x", t.toString());
 
-        PolynomialFunction f = PolynomialFunction.from(t);
+        Polynomial f = Polynomial.from(t);
         assertEquals("x", f.toString());
     }
 
@@ -35,13 +35,13 @@ public class MonomialFunctionTest {
         Term t1 = Term.from(Variable.named('x')).powerOf(2).times(4);
         assertEquals("4x^2", t1.toString());
 
-        PolynomialFunction f1 = Variable.named('x').powerOf(2).times(4);
+        Polynomial f1 = Variable.named('x').powerOf(2).times(4);
         assertEquals("4x^2", f1.toString());
 
         Term t2 = Term.from(Variable.named('x')).times(4).powerOf(2);
         assertEquals("16x^2", t2.toString());
 
-        PolynomialFunction f2 = Variable.named('x').times(4).powerOf(2);
+        Polynomial f2 = Variable.named('x').times(4).powerOf(2);
         assertEquals("16x^2", f2.toString());
     }
 
@@ -52,7 +52,7 @@ public class MonomialFunctionTest {
                 .times(Term.from(Variable.named('b')));
         assertEquals("abc", t.toString());
 
-        PolynomialFunction f = Variable.named('c')
+        Polynomial f = Variable.named('c')
                 .times(Variable.named('a'))
                 .times(Variable.named('b'));
         assertEquals("abc", f.toString());
@@ -64,25 +64,25 @@ public class MonomialFunctionTest {
         Term t2 = Term.from(Variable.named('a')).powerOf(3).times(3);
         assertEquals("6a^5", t1.times(t2).toString());
 
-        PolynomialFunction f1 = Variable.named('a').powerOf(2).times(2);
-        PolynomialFunction f2 = Variable.named('a').powerOf(3).times(3);
+        Polynomial f1 = Variable.named('a').powerOf(2).times(2);
+        Polynomial f2 = Variable.named('a').powerOf(3).times(3);
         assertEquals("6a^5", f1.times(f2).toString());
 
         Term t3 = Term.from(Variable.named('b')).powerOf(3).times(3);
         assertEquals("6a^2b^3", t1.times(t3).toString());
 
-        PolynomialFunction f3 = Variable.named('b').powerOf(3).times(3);
+        Polynomial f3 = Variable.named('b').powerOf(3).times(3);
         assertEquals("6a^2b^3", f1.times(f3).toString());
     }
 
     @Test
     public void 定数と全ての変数の名前と次数が同じ単項式は等価である() {
-        PolynomialFunction f1 = Variable.named('a').powerOf(2)
+        Polynomial f1 = Variable.named('a').powerOf(2)
                 .times(Variable.named('b').powerOf(3))
                 .times(5);
         assertEquals("5a^2b^3", f1.toString());
 
-        PolynomialFunction f2 = Variable.named('a').times(Variable.named('b'));
+        Polynomial f2 = Variable.named('a').times(Variable.named('b'));
         assertNotEquals(f1, f2);  //ab
         assertNotEquals(f1, f2.times(Variable.named('a')));  //a^2b
         assertNotEquals(f1, f2.times(Variable.named('a')).times(Variable.named('b').powerOf(2)));  //a^2b^3
@@ -110,7 +110,7 @@ public class MonomialFunctionTest {
         Term t2 = Term.from(x).powerOf(2);
         assertEquals(t2.times(5), t2.times(2).plus(t2.times(3)));
 
-        PolynomialFunction x2 = x.powerOf(2);
+        Polynomial x2 = x.powerOf(2);
         assertEquals(x2.times(5), x2.times(2).plus(x2.times(3)));
 
         assertThrows(AssertionError.class, () -> {

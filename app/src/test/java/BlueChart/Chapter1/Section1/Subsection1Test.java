@@ -1,6 +1,6 @@
 package BlueChart.Chapter1.Section1;
 
-import BlueChartSolver.app.Variable;
+import BlueChartSolver.models.Variable;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +8,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SuppressWarnings({"NonAsciiCharacters", "OptionalGetWithoutIsPresent", "NewClassNamingConvention"})
+@SuppressWarnings({"NonAsciiCharacters", "OptionalGetWithoutIsPresent"})
 public class Subsection1Test {
     @Nested
     class 例題1 {

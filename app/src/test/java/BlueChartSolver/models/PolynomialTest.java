@@ -1,22 +1,24 @@
-package BlueChartSolver.app;
+package BlueChartSolver.models;
 
+import BlueChartSolver.models.Polynomial;
+import BlueChartSolver.models.Variable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class PolynomialFunctionTest {
+public class PolynomialTest {
     @Test
     public void 多項式は着目した変数の次数の高い順に並べることができる() {
         Variable x = Variable.named('x');
         Variable y = Variable.named('y');
-        PolynomialFunction p = x.powerOf(2)
+        Polynomial p = x.powerOf(2)
                 .plus(x.times(y).times(2))
                 .plus(y.powerOf(2))
                 .minus(5);
         assertEquals("x^2 + y^2 + 2xy - 5", p.toString());
         assertEquals("x^2 + 2xy + y^2 - 5", p.orderByDegreeOf(x).toString());
-        assertEquals("y^2 - 5", p.orderByDegreeOf(x).constant().orElse(PolynomialFunction.from(0)).toString());
+        assertEquals("y^2 - 5", p.orderByDegreeOf(x).constant().orElse(Polynomial.from(0)).toString());
     }
 
     @Test
@@ -51,14 +53,14 @@ public class PolynomialFunctionTest {
     @Test
     public void 同類項はまとめられる() {
         Variable x = Variable.named('x');
-        PolynomialFunction A = x.powerOf(3).times(5)
+        Polynomial A = x.powerOf(3).times(5)
                 .minus(x.powerOf(2).times(2))
                 .plus(x.times(3))
                 .plus(4);
-        PolynomialFunction B = x.powerOf(3).times(3)
+        Polynomial B = x.powerOf(3).times(3)
                 .minus(x.powerOf(2).times(5))
                 .plus(3);
-        PolynomialFunction expected = x.powerOf(3).times(2)
+        Polynomial expected = x.powerOf(3).times(2)
                 .plus(x.powerOf(2).times(3))
                 .plus(x.times(3))
                 .plus(1);

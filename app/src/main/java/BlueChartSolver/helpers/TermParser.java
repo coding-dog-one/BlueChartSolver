@@ -1,7 +1,7 @@
-package BlueChartSolver.app.Parser;
+package BlueChartSolver.helpers;
 
-import BlueChartSolver.app.PolynomialFunction;
-import BlueChartSolver.app.Variable;
+import BlueChartSolver.models.Polynomial;
+import BlueChartSolver.models.Variable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,13 +25,13 @@ public final class TermParser {
     /**
      * The 1st character must be numeric (greater than 0).<br>
      * After 2nd character, sometimes there is a sequence of numeric (0 or higher).<br>
-     * The numeric sequence is followed by nothing or a string containing no invalid characters.
+     * The numeric sequence is followed by nothing or a string containing no invalid characters. The string must start with alphabetic.
      * <ul>
      *      <li>Group 1 is the coefficient.</li>
      *      <li>Groups 2 is the rest.</li>
      */
     private static final Pattern coefficientPattern = Pattern.compile(
-            String.format("^([1-9][0-9]*)([%s]*)", allowedCharacters)
+            String.format("^([1-9][0-9]*)([a-zA-Z][%s]*)?", allowedCharacters)
     );
 
     /**
@@ -64,18 +64,19 @@ public final class TermParser {
             String.format("^([a-zA-Z])([a-zA-Z][%s]*)?", allowedCharacters)
     );
 
-    public PolynomialFunction parse(String text) {
+    public Polynomial parse(String text) {
         return parse(text, false);
     }
 
-    private PolynomialFunction parse(String text, boolean isRecursiveCall) {
+    private Polynomial parse(String text, boolean isRecursiveCall) {
         System.out.println(text);
-        if (text == null || text.length() == 0) {
+        if (text == null || text.isEmpty()) {
+            System.out.println("Input is null or empty.");
             if (!isRecursiveCall) {
                 throw new IllegalArgumentException("Failed to parse text as term. Empty string is not allowed.");
             }
 
-            return PolynomialFunction.from(1);
+            return Polynomial.from(1);
         }
 
         Matcher vem = variableAndExponentPattern.matcher(text);
@@ -111,6 +112,7 @@ public final class TermParser {
             return parse(other, true).times(-1);
         }
 
+        System.out.println("Input did not match any pattern.");
         throw new IllegalArgumentException("Failed to parse text as term. Text is not empty but invalid.");
     }
 }
