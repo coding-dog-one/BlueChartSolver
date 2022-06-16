@@ -12,6 +12,18 @@ public class OperatorParserTest {
     private static final OperatorParser parser = new OperatorParser();
 
     @Test
+    public void throwNullPointerException_WhenInputIsNull() {
+        var input = "@@@";
+        assertThrows(NullPointerException.class, () -> parser.parse(null));
+    }
+
+    @Test
+    public void throwIllegalArgumentException_WhenInputDoesNotMatchAnyOperator() {
+        var input = "@@@";
+        assertThrows(IllegalArgumentException.class, () -> parser.parse(input));
+    }
+
+    @Test
     public void parseAdditionSymbol() {
         var input = "+";
         var output = parser.parse(input);
@@ -30,11 +42,5 @@ public class OperatorParserTest {
         var input = "*";
         var output = parser.parse(input);
         assertEquals(Multiply.class, output.getClass());
-    }
-
-    @Test
-    public void throwIllegalArgumentException_WhenInputIsInvalid() {
-        var input = "@@@";
-        assertThrows(IllegalArgumentException.class, () -> parser.parse(input));
     }
 }

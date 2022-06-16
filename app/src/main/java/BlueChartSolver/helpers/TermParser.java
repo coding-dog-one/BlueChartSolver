@@ -2,11 +2,15 @@ package BlueChartSolver.helpers;
 
 import BlueChartSolver.models.Polynomial;
 import BlueChartSolver.models.Variable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class TermParser {
+    private static final Logger logger = LoggerFactory.getLogger(TermParser.class);
     private static final String allowedCharacters = "a-zA-Z0-9^";
 
     /**
@@ -65,17 +69,20 @@ public final class TermParser {
     );
 
     public Polynomial parse(String text) {
-        return parse(text, false);
+        logger.info("Started. Input: {}", text == null ? null : "\"" + text + "\"");
+        var result = parse(Objects.requireNonNull(text), false);
+        logger.info("End. Result: {}", result);
+        return result;
     }
 
     private Polynomial parse(String text, boolean isRecursiveCall) {
-        System.out.println(text);
+        logger.debug("Analyzing (recursive: {}) {} ...", isRecursiveCall, text == null ? null : "\"" + text + "\"");
+
         if (text == null || text.isEmpty()) {
-            System.out.println("Input is null or empty.");
             if (!isRecursiveCall) {
+                logger.error("Quit. Input is null or empty.");
                 throw new IllegalArgumentException("Failed to parse text as term. Empty string is not allowed.");
             }
-
             return Polynomial.from(1);
         }
 
@@ -84,7 +91,7 @@ public final class TermParser {
             var variable = Variable.named(vem.group(2).charAt(0));
             var exponent = Integer.parseInt(vem.group(3));
             var other = vem.group(4);
-            System.out.println("found variable and exponent: " + variable + " power of " + exponent);
+            logger.trace("Found variable and exponent: " + variable + " power of " + exponent);
             return parse(other, true).times(variable.powerOf(exponent));
         }
 
@@ -92,7 +99,7 @@ public final class TermParser {
         if (vm.matches()) {
             var variable = Variable.named(vm.group(1).charAt(0));
             var other = vm.group(2);
-            System.out.println("found variable: " + variable);
+            logger.trace("Found variable: " + variable);
             return parse(other, true).times(variable);
         }
 
@@ -100,7 +107,7 @@ public final class TermParser {
         if (cm.matches()) {
             var coefficient = Integer.parseInt(cm.group(1));
             var other = cm.group(2);
-            System.out.println("found coefficient: " + coefficient);
+            logger.trace("Found coefficient: " + coefficient);
             return parse(other, true).times(coefficient);
         }
 
@@ -108,11 +115,11 @@ public final class TermParser {
         if (nm.matches()) {
             var minus = nm.group(1);
             var other = nm.group(2);
-            System.out.println("found minus: " + minus);
+            logger.trace("Found minus: " + minus);
             return parse(other, true).times(-1);
         }
 
-        System.out.println("Input did not match any pattern.");
+        logger.error("Quit. Input did not match any pattern.");
         throw new IllegalArgumentException("Failed to parse text as term. Text is not empty but invalid.");
     }
 }
