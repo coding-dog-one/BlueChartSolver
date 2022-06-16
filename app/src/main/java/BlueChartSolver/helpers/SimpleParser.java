@@ -3,29 +3,40 @@ package BlueChartSolver.helpers;
 import BlueChartSolver.models.Polynomial;
 import BlueChartSolver.models.operators.Addition;
 import BlueChartSolver.models.operators.Operator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Objects;
 
 public class SimpleParser {
+    private static final Logger logger = LoggerFactory.getLogger(SimpleParser.class);
     private static final TermParser termParser = new TermParser();
     private static final OperatorParser operatorParser = new OperatorParser();
 
     public Polynomial parse(String text) {
-        String[] splitText = text.split(" ");
+        logger.info("Started. Input: {}", text == null ? null : "\"" + text + "\"");
+
+        String[] splitText = Objects.requireNonNull(text).split(" ");
         var length = splitText.length;
         if (length % 2 == 0) {
-            throw new IllegalArgumentException("Please input terms and operators as space-separated text. The length of split input should be odd but was " + length + ".");
+            logger.error("Quit. The length of split text should be odd but was {}", length);
+            throw new IllegalArgumentException("Input text is invalid format.");
         }
 
         var result = Polynomial.from(0);
         var operator = (Operator) new Addition();
         for (int i = 0; i < splitText.length; i++) {
-            String s = splitText[i];
-            System.out.println(s);
+            var s = splitText[i];
+            logger.debug("Analyzing \"{}\"...", s);
             if (i % 2 == 0) {
+                logger.trace("Call TermParser.");
                 result = operator.operate(result, termParser.parse(s));
             } else {
+                logger.trace("Call OperatorParser.");
                 operator = operatorParser.parse(s);
             }
         }
+        logger.info("End. Result: {}", result);
         return result;
     }
 }

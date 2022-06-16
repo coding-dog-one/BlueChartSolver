@@ -11,6 +11,43 @@ public class TermParserTest {
     private static final TermParser parser = new TermParser();
 
     @Test
+    public void throwNullPointerException_WhenInputIsNull() {
+        assertThrows(NullPointerException.class, () -> parser.parse(null));
+    }
+
+    @Test
+    public void throwIllegalArgumentException_WhenInputIsEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> parser.parse(""));
+    }
+
+    @Test
+    public void throwIllegalArgumentException_WhenInputDoesNotMatchAnyPattern() {
+        // Input is not empty but blank
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("   "));
+
+        // Input violates negativePattern
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("-"));
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("-0"));
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("--10"));
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("-5@"));
+
+        // Input violates coefficientPattern
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("0a"));
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("0123"));
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("8-"));
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("5^5"));
+
+        // Input violates variableAndExponentPattern
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("a^b"));
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("a^-2"));
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("a^0123"));
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("a^2-"));
+
+        // Input violates variableOnlyPattern
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("a4"));
+    }
+
+    @Test
     public void parseInt() {
         assertEquals(Polynomial.from(1), parser.parse("1"));
         assertEquals(Polynomial.from(999), parser.parse("999"));
@@ -67,38 +104,5 @@ public class TermParserTest {
 
         var z = Variable.named('z');
         assertEquals(x.powerOf(2).times(y).times(z.powerOf(99)).times(345), parser.parse("345x^2yz^99"));
-    }
-
-    @Test
-    public void throwIllegalArgumentException_WhenInputIsNullOrEmpty() {
-        assertThrows(IllegalArgumentException.class, () -> parser.parse(null));
-        assertThrows(IllegalArgumentException.class, () -> parser.parse(""));
-    }
-
-    @Test
-    public void throwIllegalArgumentException_WhenInputDoesNotMatchAnyPattern() {
-        // Input is not empty but blank
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("   "));
-
-        // Input violates negativePattern
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("-"));
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("-0"));
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("--10"));
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("-5@"));
-
-        // Input violates coefficientPattern
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("0a"));
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("0123"));
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("8-"));
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("5^5"));
-
-        // Input violates variableAndExponentPattern
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("a^b"));
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("a^-2"));
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("a^0123"));
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("a^2-"));
-
-        // Input violates variableOnlyPattern
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("a4"));
     }
 }

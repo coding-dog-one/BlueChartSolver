@@ -11,10 +11,13 @@ public class SimpleParserTest {
     private static final SimpleParser parser = new SimpleParser();
 
     @Test
+    public void throwNullPointerException_WhenInputIsNull() {
+        assertThrows(NullPointerException.class, () -> parser.parse(null));
+    }
+
+    @Test
     public void throwIllegalArgumentException_WhenSplitInputLengthIsEven() {
-        assertThrows(IllegalArgumentException.class, () -> parser.parse(""));
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("   "));
-        assertThrows(IllegalArgumentException.class, () -> parser.parse("+"));
+        assertThrows(IllegalArgumentException.class, () -> parser.parse("  "));
         assertThrows(IllegalArgumentException.class, () -> parser.parse("+ 100"));
     }
 
