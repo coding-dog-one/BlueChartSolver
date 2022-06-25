@@ -9,36 +9,46 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings({"NonAsciiCharacters"})
 public class Subsection2Test {
+    /**
+     * <h1>整式の加法・減法</h1>
+     * A = x^2 + 3y^2 - 2xy、<br>
+     * B = y^2 + 3xy - 2x^2、<br>
+     * C = -3x^2 + xy - 4y^2であるとき、次の計算をせよ。
+     */
     @Nested
     class 例題2 {
-        private final Variable x = Variable.named('x');
-        private final Variable y = Variable.named('y');
-        private final Polynomial A = x.powerOf(2)
-                .plus(y.powerOf(2).times(3))
-                .minus(x.times(y).times(2));
-        private final Polynomial B = y.powerOf(2)
-                .plus(x.times(y).times(3))
-                .minus(x.powerOf(2).times(2));
-        private final Polynomial C = x.powerOf(2).times(-3)
-                .plus(x.times(y))
-                .minus(y.powerOf(2).times(4));
+        private final Polynomial A = parser.parse("x^2 + 3y^2 - 2xy");
+        private final Polynomial B = parser.parse("y^2 + 3xy - 2x^2");
+        private final Polynomial C = parser.parse("-3x^2 + xy - 4y^2");
 
+        /**
+         * (1) A + B
+         */
         @Test
         public void test1() {
             assertEquals("-x^2 + xy + 4y^2", A.plus(B).orderByDegreeOf(x).toString());
         }
 
+        /**
+         * (2) A - B
+         */
         @Test
         public void test2() {
             assertEquals("3x^2 - 5xy + 2y^2", A.minus(B).orderByDegreeOf(x).toString());
         }
 
+        /**
+         * (3) -3A + 2B - C
+         */
         @Test
         public void test3() {
             var p = A.times(-3).plus(B.times(2)).minus(C);
             assertEquals("-4x^2 + 11xy - 3y^2", p.orderByDegreeOf(x).toString());
         }
 
+        /**
+         * (4) 3(2A + C) - 2{2(A + C) - (B - C)}
+         */
         @Test
         public void test4() {
             var p = (A.times(2).plus(C)).times(3)
@@ -47,6 +57,11 @@ public class Subsection2Test {
         }
     }
 
+    /**
+     * A = -2x^3 + 4x^2y + 5y^3、<br>
+     * B = x^2y - 3xy^2 + 2y^3、<br>
+     * C = 3x^3 - 2x^2yであるとき、次の計算をせよ。
+     */
     @Nested
     class 練習2 {
         private final Variable x = Variable.named('x');
@@ -60,12 +75,18 @@ public class Subsection2Test {
         private final Polynomial C = x.powerOf(3).times(3)
                 .minus(x.powerOf(2).times(y).times(2));
 
+        /**
+         * (1) 3(A - 2B) - 2(A - 2B - C)
+         */
         @Test
         public void test1() {
             var p = (A.minus(B.times(2))).times(3).minus((A.minus(B.times(2)).minus(C)).times(2));
             assertEquals("4x^3 - 2x^2y + 6xy^2 + y^3", p.orderByDegreeOf(x).toString());
         }
 
+        /**
+         * (2) 3A - 2{(2A - B) - (A - 3B)} - 3C
+         */
         @Test
         public void test2() {
             var p = A.times(3)
