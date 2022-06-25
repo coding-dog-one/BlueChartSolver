@@ -114,6 +114,14 @@ public class Polynomial {
         return orderByDegreeOf(Set.of(variable));
     }
 
+    public OrderedTermsList orderByDegreeOf(char... characters) {
+        var variableSet = new HashSet<Variable>();
+        for (var c : characters) {
+            variableSet.add(Variable.named(c));
+        }
+        return orderByDegreeOf(variableSet);
+    }
+
     @Override
     public String toString() {
         Set<Variable> allVariables = terms.values().stream()
