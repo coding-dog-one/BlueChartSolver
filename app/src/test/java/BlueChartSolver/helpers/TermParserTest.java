@@ -7,21 +7,21 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TermParserTest {
+class TermParserTest {
     private static final TermParser parser = new TermParser();
 
     @Test
-    public void throwNullPointerException_WhenInputIsNull() {
+    void throwNullPointerException_WhenInputIsNull() {
         assertThrows(NullPointerException.class, () -> parser.parse(null));
     }
 
     @Test
-    public void throwIllegalArgumentException_WhenInputIsEmpty() {
+    void throwIllegalArgumentException_WhenInputIsEmpty() {
         assertThrows(IllegalArgumentException.class, () -> parser.parse(""));
     }
 
     @Test
-    public void throwIllegalArgumentException_WhenInputDoesNotMatchAnyPattern() {
+    void throwIllegalArgumentException_WhenInputDoesNotMatchAnyPattern() {
         // Input is not empty but blank
         assertThrows(IllegalArgumentException.class, () -> parser.parse("   "));
 
@@ -48,14 +48,14 @@ public class TermParserTest {
     }
 
     @Test
-    public void parseInt() {
+    void parseInt() {
         assertEquals(Polynomial.from(1), parser.parse("1"));
         assertEquals(Polynomial.from(999), parser.parse("999"));
         assertEquals(Polynomial.from(-5), parser.parse("-5"));
     }
 
     @Test
-    public void parseVariable() {
+    void parseVariable() {
         var x = Variable.named('x');
         assertEquals(Polynomial.from(x), parser.parse("x"));
 
@@ -67,7 +67,7 @@ public class TermParserTest {
     }
 
     @Test
-    public void parseVariableWithCoefficient() {
+    void parseVariableWithCoefficient() {
         var x = Variable.named('x');
         assertEquals(x.times(5), parser.parse("5x"));
         assertEquals(x.times(50), parser.parse("50x"));
@@ -82,7 +82,7 @@ public class TermParserTest {
     }
 
     @Test
-    public void parseVariableWithExponent() {
+    void parseVariableWithExponent() {
         var x = Variable.named('x');
         assertEquals(x.powerOf(2), parser.parse("x^2"));
 
@@ -94,7 +94,7 @@ public class TermParserTest {
     }
 
     @Test
-    public void parseVariableWithCoefficientAndExponent() {
+    void parseVariableWithCoefficientAndExponent() {
         var x = Variable.named('x');
         assertEquals(x.powerOf(2).times(5), parser.parse("5x^2"));
         assertEquals(x.powerOf(2).times(-5), parser.parse("-5x^2"));

@@ -2,34 +2,35 @@ package BlueChartSolver.helpers;
 
 import BlueChartSolver.models.Polynomial;
 import BlueChartSolver.models.Variable;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SimpleParserTest {
+class SimpleParserTest {
     private static final SimpleParser parser = new SimpleParser();
 
     @Test
-    public void throwNullPointerException_WhenInputIsNull() {
+    void throwNullPointerException_WhenInputIsNull() {
         assertThrows(NullPointerException.class, () -> parser.parse(null));
     }
 
     @Test
-    public void throwIllegalArgumentException_WhenSplitInputLengthIsEven() {
+    void throwIllegalArgumentException_WhenSplitInputLengthIsEven() {
         assertThrows(IllegalArgumentException.class, () -> parser.parse("  "));
         assertThrows(IllegalArgumentException.class, () -> parser.parse("+ 100"));
     }
 
     @Test
-    public void parseMonomial() {
+    void parseMonomial() {
         assertEquals(Polynomial.from(10), parser.parse("10"));
 
         var x = Variable.named('x');
         assertEquals(x.powerOf(2).times(-5), parser.parse("-5x^2"));
     }
     @Test
-    public void parsePolynomial() {
+    void parsePolynomial() {
         var x = Variable.named('x');
         var f1 = x.powerOf(2).times(-1)
                 .plus(x.times(5))
@@ -43,8 +44,9 @@ public class SimpleParserTest {
         assertEquals(f2, parser.parse("-5x^2 + 4xy - 4y^2"));
     }
 
+    @Disabled("Under development.")
     @Test
-    public void parsePolynomialWithParentheses() {
+    void parsePolynomialWithParentheses() {
         var a = Variable.named('a');
         var b = Variable.named('b');
 

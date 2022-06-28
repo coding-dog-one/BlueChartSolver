@@ -22,7 +22,7 @@ public class Subsection1Test {
          * (1) 3x^2 + 2x - 6 - 4x^2 + 3x + 2
          */
         @Test
-        public void 問1() {
+        void 問1() {
             var organized = parser.parse("3x^2 + 2x - 6 - 4x^2 + 3x + 2");
             assertEquals("-x^2 + 5x - 4", organized.orderByDegreeOf('x').toString());
         }
@@ -31,7 +31,7 @@ public class Subsection1Test {
          * (2) 2a^2 - ab - b^2 + 4ab + 3a^2 + 2b^2 [b]
          */
         @Test
-        public void 問2() {
+        void 問2() {
             var organized = parser.parse("2a^2 - ab - b^2 + 4ab + 3a^2 + 2b^2");
             assertEquals("5a^2 + 3ab + b^2", organized.orderByDegreeOf('a').toString());
 
@@ -44,7 +44,7 @@ public class Subsection1Test {
          * (3) x^3 - 2ax^2y + 4xy - 3by + y^2 + 2xy - 2by + 4a [xとy]、[y]
          */
         @Test
-        public void 問3() {
+        void 問3() {
             var organized = parser.parse("x^3 - 2ax^2y + 4xy - 3by + y^2 + 2xy - 2by + 4a");
             assertEquals("x^3 - 2ax^2y + 6xy + y^2 - 5by + 4a", organized.orderByDegreeOf('x').toString());
 
@@ -64,7 +64,7 @@ public class Subsection1Test {
          * (1) 整式 -2x + 3y + x^2 + 5x - yの同類項をまとめよ。
          */
         @Test
-        public void 問1() {
+        void 問1() {
             var organized = parser.parse("-2x + 3y + x^2 + 5x - y");
             assertEquals("x^2 + 3x + 2y", organized.orderByDegreeOf(Variable.named('x')).toString());
         }
@@ -74,7 +74,7 @@ public class Subsection1Test {
          *   (ア) x - 2xy + 3y^2 + 4 - 2x - 7xy + 2y^2 - 1 [y]
          */
         @Test
-        public void 問2ア() {
+        void 問2ア() {
             var organized = parser.parse("x - 2xy + 3y^2 + 4 - 2x - 7xy + 2y^2 - 1");
 
             // yに着目したときの次数と定数項
@@ -87,7 +87,7 @@ public class Subsection1Test {
          *   (イ) a^2b^2 - ab + 3ab - 2a^2b^2 + 7c^2 + 4a - 5b - 3a + 1 [b]、[aとb]
          */
         @Test
-        public void 問2イ() {
+        void 問2イ() {
             var organized = parser.parse("a^2b^2 - ab + 3ab - 2a^2b^2 + 7c^2 + 4a - 5b - 3a + 1");
 
             // bに着目したときの次数と定数項

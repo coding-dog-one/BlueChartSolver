@@ -1,15 +1,13 @@
 package BlueChartSolver.models;
 
-import BlueChartSolver.models.Polynomial;
-import BlueChartSolver.models.Variable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class PolynomialTest {
+class PolynomialTest {
     @Test
-    public void 多項式は着目した変数の次数の高い順に並べることができる() {
+    void 多項式は着目した変数の次数の高い順に並べることができる() {
         Variable x = Variable.named('x');
         Variable y = Variable.named('y');
         Polynomial p = x.powerOf(2)
@@ -22,7 +20,7 @@ public class PolynomialTest {
     }
 
     @Test
-    public void 交換法則() {
+    void 交換法則() {
         Variable A = Variable.named('A');
         Variable B = Variable.named('B');
         assertEquals("A + B", A.plus(B).toString());
@@ -30,7 +28,7 @@ public class PolynomialTest {
     }
 
     @Test
-    public void 結合法則() {
+    void 結合法則() {
         Variable A = Variable.named('A');
         Variable B = Variable.named('B');
         Variable C = Variable.named('C');
@@ -39,7 +37,7 @@ public class PolynomialTest {
     }
 
     @Test
-    public void 分配法則() {
+    void 分配法則() {
         Variable A = Variable.named('A');
         Variable B = Variable.named('B');
         Variable C = Variable.named('C');
@@ -51,7 +49,7 @@ public class PolynomialTest {
     }
 
     @Test
-    public void 同類項はまとめられる() {
+    void 同類項はまとめられる() {
         Variable x = Variable.named('x');
         Polynomial A = x.powerOf(3).times(5)
                 .minus(x.powerOf(2).times(2))
@@ -68,7 +66,7 @@ public class PolynomialTest {
     }
 
     @Test
-    public void 二次式の展開公式() {
+    void 二次式の展開公式() {
         Variable a = Variable.named('a');
         Variable b = Variable.named('b');
         assertEquals(
@@ -108,7 +106,7 @@ public class PolynomialTest {
     }
 
     @Test
-    public void 三次式の展開公式() {
+    void 三次式の展開公式() {
         Variable a = Variable.named('a');
         Variable b = Variable.named('b');
         assertEquals(

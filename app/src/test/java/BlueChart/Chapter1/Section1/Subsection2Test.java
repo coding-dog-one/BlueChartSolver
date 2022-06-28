@@ -27,7 +27,7 @@ public class Subsection2Test {
          * (1) A + B
          */
         @Test
-        public void 問1() {
+        void 問1() {
             var organized = A.plus(B);
             assertEquals("-x^2 + xy + 4y^2", organized.orderByDegreeOf('x').toString());
         }
@@ -36,7 +36,7 @@ public class Subsection2Test {
          * (2) A - B
          */
         @Test
-        public void 問2() {
+        void 問2() {
             var organized = A.minus(B);
             assertEquals("3x^2 - 5xy + 2y^2", organized.orderByDegreeOf('x').toString());
         }
@@ -45,7 +45,7 @@ public class Subsection2Test {
          * (3) -3A + 2B - C
          */
         @Test
-        public void 問3() {
+        void 問3() {
             var organized = A.times(-3).plus(B.times(2)).minus(C);
             assertEquals("-4x^2 + 11xy - 3y^2", organized.orderByDegreeOf('x').toString());
         }
@@ -54,7 +54,7 @@ public class Subsection2Test {
          * (4) 3(2A + C) - 2{2(A + C) - (B - C)}
          */
         @Test
-        public void 問4() {
+        void 問4() {
             var organized = (A.times(2).plus(C)).times(3)
                     .minus((A.plus(C).times(2).minus(B.minus(C))).times(2));
             assertEquals("7x^2 - xy + 20y^2", organized.orderByDegreeOf('x').toString());
@@ -76,7 +76,7 @@ public class Subsection2Test {
          * (1) 3(A - 2B) - 2(A - 2B - C)
          */
         @Test
-        public void 問1() {
+        void 問1() {
             var organized = (A.minus(B.times(2))).times(3).minus((A.minus(B.times(2)).minus(C)).times(2));
             assertEquals("4x^3 - 2x^2y + 6xy^2 + y^3", organized.orderByDegreeOf('x').toString());
         }
@@ -85,7 +85,7 @@ public class Subsection2Test {
          * (2) 3A - 2{(2A - B) - (A - 3B)} - 3C
          */
         @Test
-        public void 問2() {
+        void 問2() {
             var organized = A.times(3)
                     .minus((A.times(2).minus(B).minus(A.minus(B.times(3)))).times(2))
                     .minus(C.times(3));

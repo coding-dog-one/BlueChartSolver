@@ -15,9 +15,9 @@ public class Term {
         this.variables = Objects.requireNonNull(variables, "variables");
     }
 
-    public static Term from(Variable var) {
+    public static Term from(Variable variable) {
         Map<Variable, Integer> variables = new HashMap<>();
-        variables.put(var, 1);
+        variables.put(variable, 1);
         return new Term(1, variables);
     }
 
@@ -26,7 +26,9 @@ public class Term {
     }
 
     public Term plus(Term addend) {
-        assert this.likes(addend) : "can't add unlike term.";
+        if (!this.likes(addend)) {
+            throw new IllegalArgumentException("can't add unlike term.");
+        }
         return new Term(this.coefficient + addend.coefficient, new HashMap<>(this.variables));
     }
 
@@ -39,8 +41,8 @@ public class Term {
                 copy.put(key, value);
             }
         });
-        int coefficient = this.coefficient * multiplier.coefficient;
-        return new Term(coefficient, copy);
+        int newCoefficient = coefficient * multiplier.coefficient;
+        return new Term(newCoefficient, copy);
     }
 
     public Term times(int multiplier) {
@@ -90,7 +92,8 @@ public class Term {
     @Override
     public String toString() {
         if (variables.size() == 0) { return Integer.toString(coefficient); }
-        return (coefficient == 1 ? "" : coefficient == -1 ? "-" : coefficient) + toStringWithoutCoefficient();
+        if (coefficient == 1) { return "" + toStringWithoutCoefficient(); }
+        return (coefficient == -1 ? "-" : coefficient) + toStringWithoutCoefficient();
     }
 
     public boolean likes(Term other) {
