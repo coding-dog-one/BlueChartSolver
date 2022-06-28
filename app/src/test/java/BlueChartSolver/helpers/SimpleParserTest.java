@@ -42,4 +42,30 @@ public class SimpleParserTest {
                 .minus(y.powerOf(2).times(4));
         assertEquals(f2, parser.parse("-5x^2 + 4xy - 4y^2"));
     }
+
+    @Test
+    public void parsePolynomialWithParentheses() {
+        var a = Variable.named('a');
+        var b = Variable.named('b');
+
+        assertEquals(
+                (a.plus(b)).times(a.times(-3)),
+                parser.parse("-3a(a + b)")
+        );
+
+        assertEquals(
+                a.plus(b).times(a.plus(b)),
+                parser.parse("(a + b)(a + b)")
+        );
+
+        assertEquals(
+                (a.plus(b)).powerOf(2),
+                parser.parse("(a + b)^2")
+        );
+
+        assertEquals(
+                a.plus(b).powerOf(2).times(a.minus(b)),
+                parser.parse("(a + b)^2(a - b)")
+        );
+    }
 }
