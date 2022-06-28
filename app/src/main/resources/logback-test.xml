@@ -1,4 +1,4 @@
 <configuration>
     <include resource="logback-common.xml" />
-    <logger name="BlueChartSolver" level="TRACE"/>
+    <logger name="blue_chart_solver" level="TRACE"/>
 </configuration>
