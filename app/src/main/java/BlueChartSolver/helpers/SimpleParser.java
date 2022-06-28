@@ -7,16 +7,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class SimpleParser {
     private static final Logger logger = LoggerFactory.getLogger(SimpleParser.class);
     private static final TermParser termParser = new TermParser();
     private static final OperatorParser operatorParser = new OperatorParser();
+    private static final Pattern containsParenthesisPattern = Pattern.compile(".*[({].*");
 
     public Polynomial parse(String text) {
         logger.info("Started. Input: {}", text == null ? null : "\"" + text + "\"");
 
-        String[] splitText = Objects.requireNonNull(text).split(" ");
+        if (containsParenthesisPattern.matcher(Objects.requireNonNull(text)).matches()) {
+            logger.debug("Input contains parentheses.");
+        }
+
+//        ParserState state = null;
+//        while (state instanceof EndOfText) {
+//            state = read();
+//            switch (state.getClass()) {
+//                case FindOpenParenthesis.class:
+//                    break;
+//                case FindCloseParenthesis.class:
+//                    break;
+//                case Other.class:
+//                    break;
+//                case EndOfText.class:
+//                    break;
+//            }
+//        }
+
+        String[] splitText = text.split(" ");
         var length = splitText.length;
         if (length % 2 == 0) {
             logger.error("Quit. The length of split text should be odd but was {}", length);
