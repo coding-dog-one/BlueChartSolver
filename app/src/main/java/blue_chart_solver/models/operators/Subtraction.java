@@ -1,6 +1,6 @@
-package BlueChartSolver.models.operators;
+package blue_chart_solver.models.operators;
 
-import BlueChartSolver.models.Polynomial;
+import blue_chart_solver.models.Polynomial;
 
 public class Subtraction implements Operator {
     @Override

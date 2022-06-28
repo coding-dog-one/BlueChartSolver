@@ -1,4 +1,4 @@
-package BlueChartSolver.app;
+package blue_chart_solver.app;
 
 public class App {
     public static void main(String[] args) {

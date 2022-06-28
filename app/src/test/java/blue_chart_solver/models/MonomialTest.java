@@ -1,5 +1,6 @@
-package BlueChartSolver.models;
+package blue_chart_solver.models;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -155,7 +156,7 @@ class MonomialTest {
 
         Term t2 = t.times(Term.from(y).powerOf(2));
         assertEquals(5, t2.degree());
-        assertEquals(5, t2.degreeOf(Set.of(x, y)));
+        Assertions.assertEquals(5, t2.degreeOf(Set.of(x, y)));
         assertEquals(3, t2.degreeOf(x));
 
         Term constant = Term.from(5);

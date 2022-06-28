@@ -1,7 +1,7 @@
 package BlueChart.Chapter1.Section1;
 
-import BlueChartSolver.helpers.SimpleParser;
-import BlueChartSolver.models.Polynomial;
+import blue_chart_solver.helpers.SimpleParser;
+import blue_chart_solver.models.Polynomial;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 

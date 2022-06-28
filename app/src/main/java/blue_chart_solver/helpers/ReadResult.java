@@ -1,4 +1,4 @@
-package BlueChartSolver.helpers;
+package blue_chart_solver.helpers;
 
 import java.util.Arrays;
 import java.util.Optional;

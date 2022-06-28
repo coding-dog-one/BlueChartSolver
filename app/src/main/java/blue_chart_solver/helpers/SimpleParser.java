@@ -1,8 +1,8 @@
-package BlueChartSolver.helpers;
+package blue_chart_solver.helpers;
 
-import BlueChartSolver.models.Polynomial;
-import BlueChartSolver.models.operators.Addition;
-import BlueChartSolver.models.operators.Operator;
+import blue_chart_solver.models.Polynomial;
+import blue_chart_solver.models.operators.Addition;
+import blue_chart_solver.models.operators.Operator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
