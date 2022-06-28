@@ -32,8 +32,8 @@ public class Polynomial {
         return new Polynomial(terms);
     }
 
-    public static Polynomial from(Variable var) {
-        return Polynomial.from(Term.from(var));
+    public static Polynomial from(Variable variable) {
+        return Polynomial.from(Term.from(variable));
     }
 
     public static Polynomial from(int constant) {

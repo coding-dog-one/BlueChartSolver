@@ -1,14 +1,15 @@
 package BlueChartSolver.helpers;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Stack;
+import java.util.Deque;
 
-import static BlueChartSolver.helpers.ReadResult.ReaderState.EndOfString;
+import static BlueChartSolver.helpers.ReadResult.ReaderState.END_OF_STRING;
 
 public class StringReader {
     private final char[] text;
     private int idx = -1;
-    private final Stack<Integer> marks = new Stack<>();
+    private final Deque<Integer> marks = new ArrayDeque<>();
 
     StringReader(String text) {
         this.text = text.toCharArray();
@@ -27,7 +28,7 @@ public class StringReader {
     public ReadResult readUntil(ReadResult.ReaderState expected) {
         while (true) {
             var result = read();
-            if (result.state.equals(expected) || result.state.equals(EndOfString)) {
+            if (result.state.equals(expected) || result.state.equals(END_OF_STRING)) {
                 return result;
             }
         }
@@ -36,26 +37,26 @@ public class StringReader {
     public ReadResult readWhile(ReadResult.ReaderState expected) {
         while (true) {
             var result = read();
-            if (!result.state.equals(expected) || result.state.equals(EndOfString)) {
+            if (!result.state.equals(expected) || result.state.equals(END_OF_STRING)) {
                 return readBackwards();
             }
         }
     }
 
     public void markRight() {
-        marks.push(idx + 1);
+        marks.addFirst(idx + 1);
     }
 
     public void markLeft() {
-        marks.push(idx);
+        marks.addFirst(idx);
     }
 
     public String getMarked() {
         if (marks.size() < 2) {
             throw new IllegalStateException("At least two must be marked. (" + marks.size() + " marked.)");
         }
-        int end = marks.pop();
-        int start = marks.pop();
+        int end = marks.removeFirst();
+        int start = marks.removeFirst();
         return String.valueOf(Arrays.copyOfRange(text, start, end));
     }
 }

@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public final class TermParser {
     private static final Logger logger = LoggerFactory.getLogger(TermParser.class);
-    private static final String allowedCharacters = "a-zA-Z0-9^";
+    private static final String ALLOWED_CHARACTERS = "a-zA-Z0-9^";
 
     /**
      *  The 1st character must be a "-".<br>
@@ -23,7 +23,7 @@ public final class TermParser {
      *  </ul>
      */
     private static final Pattern negativePattern = Pattern.compile(
-            String.format("^(-)(([a-zA-Z]|[1-9])[%s]*)", allowedCharacters)
+            String.format("^(-)(([a-zA-Z]|[1-9])[%s]*)", ALLOWED_CHARACTERS)
     );
 
     /**
@@ -35,7 +35,7 @@ public final class TermParser {
      *      <li>Groups 2 is the rest.</li>
      */
     private static final Pattern coefficientPattern = Pattern.compile(
-            String.format("^([1-9][0-9]*)([a-zA-Z][%s]*)?", allowedCharacters)
+            String.format("^([1-9][0-9]*)([a-zA-Z][%s]*)?", ALLOWED_CHARACTERS)
     );
 
     /**
@@ -52,7 +52,7 @@ public final class TermParser {
      *   </ul>
      */
     private static final Pattern variableAndExponentPattern = Pattern.compile(
-            String.format("^(([a-zA-Z])\\^([1-9][0-9]*))([%s]*)", allowedCharacters)
+            String.format("^(([a-zA-Z])\\^([1-9][0-9]*))([%s]*)", ALLOWED_CHARACTERS)
     );
 
     /**
@@ -65,7 +65,7 @@ public final class TermParser {
      * </ul>
      */
     private static final Pattern variableOnlyPattern = Pattern.compile(
-            String.format("^([a-zA-Z])([a-zA-Z][%s]*)?", allowedCharacters)
+            String.format("^([a-zA-Z])([a-zA-Z][%s]*)?", ALLOWED_CHARACTERS)
     );
 
     public Polynomial parse(String text) {
@@ -91,7 +91,7 @@ public final class TermParser {
             var variable = Variable.named(vem.group(2).charAt(0));
             var exponent = Integer.parseInt(vem.group(3));
             var other = vem.group(4);
-            logger.trace("Found variable and exponent: " + variable + " power of " + exponent);
+            logger.trace("Found variable and exponent: {} power of {}", variable, exponent);
             return parse(other, true).times(variable.powerOf(exponent));
         }
 
@@ -99,7 +99,7 @@ public final class TermParser {
         if (vm.matches()) {
             var variable = Variable.named(vm.group(1).charAt(0));
             var other = vm.group(2);
-            logger.trace("Found variable: " + variable);
+            logger.trace("Found variable: {}", variable);
             return parse(other, true).times(variable);
         }
 
@@ -107,7 +107,7 @@ public final class TermParser {
         if (cm.matches()) {
             var coefficient = Integer.parseInt(cm.group(1));
             var other = cm.group(2);
-            logger.trace("Found coefficient: " + coefficient);
+            logger.trace("Found coefficient: {}", coefficient);
             return parse(other, true).times(coefficient);
         }
 
@@ -115,7 +115,7 @@ public final class TermParser {
         if (nm.matches()) {
             var minus = nm.group(1);
             var other = nm.group(2);
-            logger.trace("Found minus: " + minus);
+            logger.trace("Found minus: {}", minus);
             return parse(other, true).times(-1);
         }
 

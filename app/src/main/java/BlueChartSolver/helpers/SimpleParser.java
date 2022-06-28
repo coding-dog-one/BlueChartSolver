@@ -22,21 +22,6 @@ public class SimpleParser {
             logger.debug("Input contains parentheses.");
         }
 
-//        ParserState state = null;
-//        while (state instanceof EndOfText) {
-//            state = read();
-//            switch (state.getClass()) {
-//                case FindOpenParenthesis.class:
-//                    break;
-//                case FindCloseParenthesis.class:
-//                    break;
-//                case Other.class:
-//                    break;
-//                case EndOfText.class:
-//                    break;
-//            }
-//        }
-
         String[] splitText = text.split(" ");
         var length = splitText.length;
         if (length % 2 == 0) {

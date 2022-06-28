@@ -8,37 +8,37 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class OperatorParserTest {
+class OperatorParserTest {
     private static final OperatorParser parser = new OperatorParser();
 
     @Test
-    public void throwNullPointerException_WhenInputIsNull() {
+    void throwNullPointerException_WhenInputIsNull() {
         var input = "@@@";
         assertThrows(NullPointerException.class, () -> parser.parse(null));
     }
 
     @Test
-    public void throwIllegalArgumentException_WhenInputDoesNotMatchAnyOperator() {
+    void throwIllegalArgumentException_WhenInputDoesNotMatchAnyOperator() {
         var input = "@@@";
         assertThrows(IllegalArgumentException.class, () -> parser.parse(input));
     }
 
     @Test
-    public void parseAdditionSymbol() {
+    void parseAdditionSymbol() {
         var input = "+";
         var output = parser.parse(input);
         assertEquals(Addition.class, output.getClass());
     }
 
     @Test
-    public void parseSubtractionSymbol() {
+    void parseSubtractionSymbol() {
         var input = "-";
         var output = parser.parse(input);
         assertEquals(Subtraction.class, output.getClass());
     }
 
     @Test
-    public void parseMultiplySymbol() {
+    void parseMultiplySymbol() {
         var input = "*";
         var output = parser.parse(input);
         assertEquals(Multiply.class, output.getClass());
