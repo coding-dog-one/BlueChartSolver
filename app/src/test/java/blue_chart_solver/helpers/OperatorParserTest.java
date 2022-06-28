@@ -1,8 +1,8 @@
-package BlueChartSolver.helpers;
+package blue_chart_solver.helpers;
 
-import BlueChartSolver.models.operators.Addition;
-import BlueChartSolver.models.operators.Multiply;
-import BlueChartSolver.models.operators.Subtraction;
+import blue_chart_solver.models.operators.Addition;
+import blue_chart_solver.models.operators.Multiply;
+import blue_chart_solver.models.operators.Subtraction;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

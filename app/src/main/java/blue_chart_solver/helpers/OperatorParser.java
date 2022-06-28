@@ -1,9 +1,9 @@
-package BlueChartSolver.helpers;
+package blue_chart_solver.helpers;
 
-import BlueChartSolver.models.operators.Addition;
-import BlueChartSolver.models.operators.Multiply;
-import BlueChartSolver.models.operators.Operator;
-import BlueChartSolver.models.operators.Subtraction;
+import blue_chart_solver.models.operators.Addition;
+import blue_chart_solver.models.operators.Multiply;
+import blue_chart_solver.models.operators.Operator;
+import blue_chart_solver.models.operators.Subtraction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

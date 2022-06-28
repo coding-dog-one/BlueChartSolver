@@ -1,18 +1,18 @@
-package BlueChartSolver.helpers;
+package blue_chart_solver.helpers;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static BlueChartSolver.helpers.ReadResult.ReaderState.CLOSE_PARENTHESIS_FOUND;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.DIGIT_FOUND;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.END_OF_STRING;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.HAT_FOUND;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.BEGINNING_OF_STRING;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.OPEN_PARENTHESIS_FOUND;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.OTHER;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.findState;
+import static blue_chart_solver.helpers.ReadResult.ReaderState.CLOSE_PARENTHESIS_FOUND;
+import static blue_chart_solver.helpers.ReadResult.ReaderState.DIGIT_FOUND;
+import static blue_chart_solver.helpers.ReadResult.ReaderState.END_OF_STRING;
+import static blue_chart_solver.helpers.ReadResult.ReaderState.HAT_FOUND;
+import static blue_chart_solver.helpers.ReadResult.ReaderState.BEGINNING_OF_STRING;
+import static blue_chart_solver.helpers.ReadResult.ReaderState.OPEN_PARENTHESIS_FOUND;
+import static blue_chart_solver.helpers.ReadResult.ReaderState.OTHER;
+import static blue_chart_solver.helpers.ReadResult.ReaderState.findState;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ReadResultTest {

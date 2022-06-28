@@ -1,10 +1,8 @@
-package BlueChartSolver.helpers;
+package blue_chart_solver.helpers;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
-
-import static BlueChartSolver.helpers.ReadResult.ReaderState.END_OF_STRING;
 
 public class StringReader {
     private final char[] text;
@@ -28,7 +26,7 @@ public class StringReader {
     public ReadResult readUntil(ReadResult.ReaderState expected) {
         while (true) {
             var result = read();
-            if (result.state.equals(expected) || result.state.equals(END_OF_STRING)) {
+            if (result.state.equals(expected) || result.state.equals(ReadResult.ReaderState.END_OF_STRING)) {
                 return result;
             }
         }
@@ -37,7 +35,7 @@ public class StringReader {
     public ReadResult readWhile(ReadResult.ReaderState expected) {
         while (true) {
             var result = read();
-            if (!result.state.equals(expected) || result.state.equals(END_OF_STRING)) {
+            if (!result.state.equals(expected) || result.state.equals(ReadResult.ReaderState.END_OF_STRING)) {
                 return readBackwards();
             }
         }

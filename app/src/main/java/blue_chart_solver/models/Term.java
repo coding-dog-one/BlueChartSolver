@@ -1,4 +1,4 @@
-package BlueChartSolver.models;
+package blue_chart_solver.models;
 
 import java.util.HashMap;
 import java.util.Map;

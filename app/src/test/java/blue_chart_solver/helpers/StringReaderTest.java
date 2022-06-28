@@ -1,17 +1,10 @@
-package BlueChartSolver.helpers;
+package blue_chart_solver.helpers;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static BlueChartSolver.helpers.ReadResult.ReaderState.CLOSE_PARENTHESIS_FOUND;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.DIGIT_FOUND;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.END_OF_STRING;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.HAT_FOUND;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.BEGINNING_OF_STRING;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.OPEN_PARENTHESIS_FOUND;
-import static BlueChartSolver.helpers.ReadResult.ReaderState.OTHER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -21,28 +14,28 @@ public class StringReaderTest {
         @Test
         void readReadsNextCharacterWhileIncrementingIndex() {
             var reader = new StringReader("-5a(a + b)^10");
-            assertEquals(OTHER, reader.read().state);
-            assertEquals(DIGIT_FOUND, reader.read().state);
-            assertEquals(OTHER, reader.read().state);
-            assertEquals(OPEN_PARENTHESIS_FOUND, reader.read().state);
-            assertEquals(OTHER, reader.read().state);
-            assertEquals(OTHER, reader.read().state);
-            assertEquals(OTHER, reader.read().state);
-            assertEquals(OTHER, reader.read().state);
-            assertEquals(OTHER, reader.read().state);
-            assertEquals(CLOSE_PARENTHESIS_FOUND, reader.read().state);
-            assertEquals(HAT_FOUND, reader.read().state);
-            assertEquals(DIGIT_FOUND, reader.read().state);
-            assertEquals(DIGIT_FOUND, reader.read().state);
+            assertEquals(ReadResult.ReaderState.OTHER, reader.read().state);
+            assertEquals(ReadResult.ReaderState.DIGIT_FOUND, reader.read().state);
+            assertEquals(ReadResult.ReaderState.OTHER, reader.read().state);
+            assertEquals(ReadResult.ReaderState.OPEN_PARENTHESIS_FOUND, reader.read().state);
+            assertEquals(ReadResult.ReaderState.OTHER, reader.read().state);
+            assertEquals(ReadResult.ReaderState.OTHER, reader.read().state);
+            assertEquals(ReadResult.ReaderState.OTHER, reader.read().state);
+            assertEquals(ReadResult.ReaderState.OTHER, reader.read().state);
+            assertEquals(ReadResult.ReaderState.OTHER, reader.read().state);
+            assertEquals(ReadResult.ReaderState.CLOSE_PARENTHESIS_FOUND, reader.read().state);
+            assertEquals(ReadResult.ReaderState.HAT_FOUND, reader.read().state);
+            assertEquals(ReadResult.ReaderState.DIGIT_FOUND, reader.read().state);
+            assertEquals(ReadResult.ReaderState.DIGIT_FOUND, reader.read().state);
 
             var result1 = reader.read();
             assertEquals(13, result1.at);
-            assertEquals(END_OF_STRING, result1.state);
+            assertEquals(ReadResult.ReaderState.END_OF_STRING, result1.state);
 
             // After the end of the string is reached, the increment stops.
             var result2 = reader.read();
             assertEquals(13, result2.at);
-            assertEquals(END_OF_STRING, result2.state);
+            assertEquals(ReadResult.ReaderState.END_OF_STRING, result2.state);
         }
 
         @Test
@@ -53,7 +46,7 @@ public class StringReaderTest {
             var result1 = reader.readBackwards();
             assertEquals(Optional.empty(), result1.found());
             assertEquals(-1, result1.at);
-            assertEquals(BEGINNING_OF_STRING, result1.state);
+            assertEquals(ReadResult.ReaderState.BEGINNING_OF_STRING, result1.state);
 
             assertEquals(Optional.of('1'), reader.read().found());
             assertEquals(Optional.of('2'), reader.read().found());
@@ -63,12 +56,12 @@ public class StringReaderTest {
 
             var result2 = reader.readBackwards();
             assertEquals(-1, result2.at);
-            assertEquals(BEGINNING_OF_STRING, result2.state);
+            assertEquals(ReadResult.ReaderState.BEGINNING_OF_STRING, result2.state);
 
             // After the beginning of the string is reached, the decrement stops.
             var result3 = reader.readBackwards();
             assertEquals(-1, result3.at);
-            assertEquals(BEGINNING_OF_STRING, result3.state);
+            assertEquals(ReadResult.ReaderState.BEGINNING_OF_STRING, result3.state);
         }
     }
 
@@ -80,12 +73,12 @@ public class StringReaderTest {
             var reader = new StringReader(testString);
 
             // Reads "03(" and stops because the condition is met.
-            var result1 = reader.readUntil(OPEN_PARENTHESIS_FOUND);
+            var result1 = reader.readUntil(ReadResult.ReaderState.OPEN_PARENTHESIS_FOUND);
             assertEquals(2, result1.at);
             assertEquals(Optional.of('('), result1.found());
 
             // Reads "1234)" and stops because the condition is met.
-            var result2 = reader.readUntil(CLOSE_PARENTHESIS_FOUND);
+            var result2 = reader.readUntil(ReadResult.ReaderState.CLOSE_PARENTHESIS_FOUND);
             assertEquals(7, result2.at);
             assertEquals(Optional.of(')'), result2.found());
         }
@@ -94,8 +87,8 @@ public class StringReaderTest {
         void readUntilGoesToEndOfString_whenExpectedConditionNeverMatches() {
             var reader = new StringReader(testString);
 
-            var result = reader.readUntil(HAT_FOUND);
-            assertEquals(END_OF_STRING, result.state);
+            var result = reader.readUntil(ReadResult.ReaderState.HAT_FOUND);
+            assertEquals(ReadResult.ReaderState.END_OF_STRING, result.state);
             assertEquals(12, result.at);
             assertEquals(Optional.empty(), result.found());
         }
@@ -105,36 +98,36 @@ public class StringReaderTest {
             var reader = new StringReader(testString);
 
             // Don't move because the next is not match the condition.
-            var result0 = reader.readWhile(OPEN_PARENTHESIS_FOUND);
+            var result0 = reader.readWhile(ReadResult.ReaderState.OPEN_PARENTHESIS_FOUND);
             assertEquals(-1, result0.at);
             assertEquals(Optional.empty(), result0.found());
 
             // Read "03" and return the final digit = '3'.
-            var result1 = reader.readWhile(DIGIT_FOUND);
+            var result1 = reader.readWhile(ReadResult.ReaderState.DIGIT_FOUND);
             assertEquals(1, result1.at);
             assertEquals(Optional.of('3'), result1.found());
 
             // Don't move because the next is not match the condition.
-            var result2 = reader.readWhile(DIGIT_FOUND);
+            var result2 = reader.readWhile(ReadResult.ReaderState.DIGIT_FOUND);
             assertEquals(1, result2.at);
             assertEquals(Optional.of('3'), result2.found());
 
             reader.read(); // Skip '('.
 
             // Read "1234" and return the final digit = '4'.
-            var result3 = reader.readWhile(DIGIT_FOUND);
+            var result3 = reader.readWhile(ReadResult.ReaderState.DIGIT_FOUND);
             assertEquals(6, result3.at);
             assertEquals(Optional.of('4'), result3.found());
 
             // Don't move because the next is not match the condition.
-            var result4 = reader.readWhile(DIGIT_FOUND);
+            var result4 = reader.readWhile(ReadResult.ReaderState.DIGIT_FOUND);
             assertEquals(6, result4.at);
             assertEquals(Optional.of('4'), result4.found());
 
             reader.read(); // Skip ')'.
 
             // Read "5678" and return the final digit = '8'.
-            var result5 = reader.readWhile(DIGIT_FOUND);
+            var result5 = reader.readWhile(ReadResult.ReaderState.DIGIT_FOUND);
             assertEquals(11, result5.at);
             assertEquals(Optional.of('8'), result5.found());
         }

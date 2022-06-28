@@ -1,7 +1,7 @@
-package BlueChartSolver.helpers;
+package blue_chart_solver.helpers;
 
-import BlueChartSolver.models.Polynomial;
-import BlueChartSolver.models.Variable;
+import blue_chart_solver.models.Polynomial;
+import blue_chart_solver.models.Variable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
