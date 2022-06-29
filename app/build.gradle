@@ -5,6 +5,7 @@
 plugins {
     id 'BlueChartSolver.java-application-conventions'
     id "org.sonarqube" version "3.4.0.2513"
+    id "jacoco"
 }
 
 application {
@@ -29,5 +30,11 @@ sonarqube {
         property "sonar.projectKey", "coding-dog-one_BlueChartSolver"
         property "sonar.organization", "coding-dog-one"
         property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
     }
 }
