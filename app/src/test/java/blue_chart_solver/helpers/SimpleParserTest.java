@@ -2,7 +2,6 @@ package blue_chart_solver.helpers;
 
 import blue_chart_solver.models.Polynomial;
 import blue_chart_solver.models.Variable;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,7 +43,6 @@ class SimpleParserTest {
         assertEquals(f2, parser.parse("-5x^2 + 4xy - 4y^2"));
     }
 
-    @Disabled("Under development.")
     @Test
     void parsePolynomialWithParentheses() {
         var a = Variable.named('a');
