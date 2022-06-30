@@ -69,14 +69,14 @@ public final class TermParser {
     );
 
     public Polynomial parse(String text) {
-        logger.info("Started. Input: {}", text == null ? null : "\"" + text + "\"");
+        logger.debug("Started. Input: {}", text == null ? null : "\"" + text + "\"");
         var result = parse(Objects.requireNonNull(text), false);
-        logger.info("End. Result: {}", result);
+        logger.debug("End. Result: {}", result);
         return result;
     }
 
     private Polynomial parse(String text, boolean isRecursiveCall) {
-        logger.debug("Analyzing (recursive: {}) {} ...", isRecursiveCall, text == null ? null : "\"" + text + "\"");
+        logger.trace("Analyzing (recursive: {}) {} ...", isRecursiveCall, text == null ? null : "\"" + text + "\"");
 
         if (text == null || text.isEmpty()) {
             if (!isRecursiveCall) {
