@@ -18,8 +18,14 @@ class MonomialTest {
         Term t = Term.from(5);
         assertEquals("5", t.toString());
 
+        Term t0 = Term.from(0);
+        assertEquals("0", t0.toString());
+
         Polynomial f = Polynomial.from(t);
         assertEquals("5", f.toString());
+
+        Polynomial f0 = Polynomial.from(t0);
+        assertEquals("0", f0.toString());
     }
 
     @Test

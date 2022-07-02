@@ -124,6 +124,10 @@ public class Polynomial {
 
     @Override
     public String toString() {
+        if (terms.size() == 0) {
+            return "0";
+        }
+
         Set<Variable> allVariables = terms.values().stream()
                 .map(Term::variables)
                 .flatMap(Collection::stream)
