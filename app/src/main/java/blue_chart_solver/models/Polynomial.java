@@ -1,12 +1,10 @@
 package blue_chart_solver.models;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Polynomial {
     private final Map<String, Term> terms;
@@ -127,12 +125,7 @@ public class Polynomial {
         if (terms.size() == 0) {
             return "0";
         }
-
-        Set<Variable> allVariables = terms.values().stream()
-                .map(Term::variables)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
-        return orderByDegreeOf(allVariables).toString();
+        return OrderedTermsList.orderByDegree(new HashSet<>(terms.values())).toString();
     }
 
     @Override

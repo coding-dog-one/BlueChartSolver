@@ -1,6 +1,7 @@
 package blue_chart_solver.models;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,6 +35,18 @@ public class OrderedTermsList {
                         .thenComparing(Term::toStringWithoutCoefficient)
                 ).collect(Collectors.toList());
         return new OrderedTermsList(orderedList, focusedVariables);
+    }
+
+    /**
+     * 項全体の次数の高い順にソートする(abc^2(=4) > abc(=3) > ab(=2))。
+     * その後、各項から係数を除いたものの辞書順にソートする(8ab > -3ac > 2bc)。
+     */
+    public static OrderedTermsList orderByDegree(Set<Term> terms) {
+        List<Term> orderedList = terms.stream()
+                .sorted(Comparator.comparing(Term::degree).reversed()
+                        .thenComparing(Term::toStringWithoutCoefficient)
+                ).collect(Collectors.toList());
+        return new OrderedTermsList(orderedList, new HashSet<>());
     }
 
     private static Comparator<Term> comparingDegreeOf(Set<Variable> focusedVariables) {

@@ -14,9 +14,9 @@ class PolynomialTest {
                 .plus(x.times(y).times(2))
                 .plus(y.powerOf(2))
                 .minus(5);
-        assertEquals("x^2 + y^2 + 2xy - 5", p.toString());
-        assertEquals("x^2 + 2xy + y^2 - 5", p.orderByDegreeOf(x).toString());
-        assertEquals("y^2 - 5", p.orderByDegreeOf(x).constant().orElse(Polynomial.from(0)).toString());
+        assertEquals("x^2 + 2xy + y^2 - 5", p.toString());
+        assertEquals("y^2 + 2xy + x^2 - 5", p.orderByDegreeOf(y).toString());
+        assertEquals("x^2 - 5", p.orderByDegreeOf(y).constant().orElse(Polynomial.from(0)).toString());
     }
 
     @Test
