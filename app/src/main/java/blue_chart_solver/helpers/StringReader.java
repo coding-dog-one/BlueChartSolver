@@ -8,6 +8,9 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
 
+import static blue_chart_solver.helpers.ReadResult.ReaderState.END_OF_STRING;
+import static blue_chart_solver.helpers.ReadResult.ReaderState.WHITE_SPACE_FOUND;
+
 public class StringReader {
     private static final Logger logger = LoggerFactory.getLogger(StringReader.class);
     private final char[] text;
@@ -26,6 +29,7 @@ public class StringReader {
     }
 
     public ReadResult readBackwards() {
+        logger.debug("Step back.");
         idx = Math.max(idx-1, -1);
         history.addFirst(ReadResult.of(text, idx));
         return history.getFirst();
@@ -36,8 +40,8 @@ public class StringReader {
         while (true) {
             var result = read();
             logger.trace("Found: '{}'", result.found());
-            if (result.state.equals(expected) || result.state.equals(ReaderState.END_OF_STRING)) {
-                logger.debug("Finished. The final state: {}", result.state);
+            if (isInAny(expected, END_OF_STRING)) {
+                logger.debug("readUntil finished. The final state: {}", result.state);
                 return result;
             }
         }
@@ -48,15 +52,39 @@ public class StringReader {
         while (true) {
             var result = read();
             logger.trace("Found: '{}'", result.found());
-            if (!result.state.equals(expected) || result.state.equals(ReaderState.END_OF_STRING)) {
-                logger.debug("Finished. The final state: {}", result.state);
+            if (isNotIn(expected) || isIn(END_OF_STRING)) {
+                logger.debug("readWhile finished. The final state: {}", result.state);
                 return readBackwards();
             }
         }
     }
 
-    public boolean is(ReaderState expected) {
-        return history.getFirst().state.equals(expected);
+    public ReadResult skipWhiteSpace() {
+        logger.debug("Skip white spaces.");
+        while (true) {
+            var result = read();
+            logger.trace("Found: '{}'", result.found());
+            if (!isIn(WHITE_SPACE_FOUND)) {
+                logger.debug("skipWhiteSpace finished. The final state: {}", result.state);
+                return result;
+            }
+        }
+    }
+
+    public ReadResult getLastResult() {
+        return history.getFirst();
+    }
+
+    public boolean isIn(ReaderState expected) {
+        return getLastResult().state.equals(expected);
+    }
+
+    public boolean isNotIn(ReaderState expected) {
+        return !isIn(expected);
+    }
+
+    public boolean isInAny(ReaderState... expected) {
+        return Arrays.asList(expected).contains(getLastResult().state);
     }
 
     public void markRight() {
