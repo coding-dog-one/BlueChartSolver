@@ -1,10 +1,13 @@
 package blue_chart_solver.models;
 
+import blue_chart_solver.helpers.SimpleParser;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SuppressWarnings("NonAsciiCharacters")
+@SuppressWarnings({"NonAsciiCharacters", "OptionalGetWithoutIsPresent"})
 class PolynomialTest {
     @Test
     void 多項式は着目した変数の次数の高い順に並べることができる() {
@@ -17,6 +20,20 @@ class PolynomialTest {
         assertEquals("x^2 + 2xy + y^2 - 5", p.toString());
         assertEquals("y^2 + 2xy + x^2 - 5", p.orderByDegreeOf(y).toString());
         assertEquals("x^2 - 5", p.orderByDegreeOf(y).constant().orElse(Polynomial.from(0)).toString());
+    }
+
+    @Test
+    void findTermReturnsMatchTerm() {
+        var f = new SimpleParser().parse("-5x^3 + 3x^2 - 100x + 3");
+        assertEquals(-5, f.findTerm(Term.from(Variable.named('x')).powerOf(3)).get().coefficient());
+        assertEquals(-5, f.findTerm(Variable.named('x'), 3).get().coefficient());
+        assertEquals(-5, f.findTerm('x', 3).get().coefficient());
+
+        assertEquals(3, f.findTerm('x', 2).get().coefficient());
+        assertEquals(-100, f.findTerm('x', 1).get().coefficient());
+
+        assertEquals(Optional.empty(), f.findTerm('y', 2));
+        assertEquals(Optional.empty(), f.findTerm('x', 10));
     }
 
     @Test
