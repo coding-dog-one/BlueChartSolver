@@ -33,6 +33,16 @@ class ReadResult {
         CLOSE_PARENTHESIS_FOUND(c -> c == ')'),
         HAT_FOUND(c -> c == '^'),
         DIGIT_FOUND(Character::isDigit),
+        WHITE_SPACE_FOUND(Character::isSpaceChar),
+        /**
+         * Minus sign or subtraction operator
+         */
+        MINUS_FOUND(c -> c == '-'),
+        /**
+         * Operators except for minus sign.
+         * @see #MINUS_FOUND
+         */
+        OPERATOR_FOUND(c -> c == '+'),
         BEGINNING_OF_STRING(null),
         END_OF_STRING(null),
         OTHER(null);
