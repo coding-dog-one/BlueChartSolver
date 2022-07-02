@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 public class Polynomial {
@@ -36,6 +37,20 @@ public class Polynomial {
 
     public static Polynomial from(int constant) {
         return Polynomial.from(Term.from(constant));
+    }
+
+    public Optional<Term> findTerm(Term term) {
+        return terms.values().stream()
+                .filter(t -> t.likes(term))
+                .findFirst();
+    }
+
+    public Optional<Term> findTerm(Variable variable, int exponent) {
+        return findTerm(Term.from(variable).powerOf(exponent));
+    }
+
+    public Optional<Term> findTerm(char variableName, int exponent) {
+        return findTerm(Variable.named(variableName), exponent);
     }
 
     public Polynomial plus(Polynomial addend) {
